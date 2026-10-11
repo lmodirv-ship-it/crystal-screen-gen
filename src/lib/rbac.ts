@@ -4,7 +4,7 @@ export type Role = (typeof ROLES)[number];
 export const primaryRole = (roles: Role[]): Role => ROLES.find((r) => roles.includes(r)) ?? "customer";
 
 export const MODULES = [
-  "dashboard", "agencies", "cars", "customers", "bookings", "contracts", "payments", "expenses", "maintenance",
+  "dashboard", "agencies", "cars", "customers", "bookings", "booking_requests", "contracts", "payments", "expenses", "maintenance",
   "documents", "notifications", "reports", "settings", "audit",
 ] as const;
 export type Module = (typeof MODULES)[number];
@@ -17,12 +17,12 @@ export const PERMISSIONS: Record<Role, { read: Module[]; write: Module[] }> = {
   developer: { read: ALL, write: ALL },
   owner: { read: ALL, write: ALL.filter((m) => m !== "audit") },
   manager: {
-    read: ["dashboard", "cars", "customers", "bookings", "contracts", "payments", "expenses", "maintenance", "documents", "notifications", "reports"],
-    write: ["cars", "customers", "bookings", "contracts", "maintenance", "documents"],
+    read: ["dashboard", "cars", "customers", "bookings", "booking_requests", "contracts", "payments", "expenses", "maintenance", "documents", "notifications", "reports"],
+    write: ["cars", "customers", "bookings", "booking_requests", "contracts", "maintenance", "documents"],
   },
   operator: {
-    read: ["dashboard", "cars", "customers", "bookings", "contracts", "documents", "notifications"],
-    write: ["customers", "bookings", "contracts", "documents"],
+    read: ["dashboard", "cars", "customers", "bookings", "booking_requests", "contracts", "documents", "notifications"],
+    write: ["customers", "bookings", "booking_requests", "contracts", "documents"],
   },
   accountant: {
     read: ["dashboard", "payments", "expenses", "contracts", "reports", "notifications"],

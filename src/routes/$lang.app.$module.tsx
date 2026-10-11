@@ -31,6 +31,12 @@ const CONFIG: Partial<Record<Module, Config>> = {
     status: { key: "status", options: ["pending", "confirmed", "completed", "cancelled"] },
     fields: [{ key: "customer_id", type: "customer", staffOnly: true }, { key: "car_id", type: "car" }, { key: "start_date", type: "date" }, { key: "end_date", type: "date" }, { key: "notes", type: "text" }],
   },
+  booking_requests: {
+    table: "booking_requests", select: "*, cars(model), agencies(name)", order: "created_at",
+    cols: ["ref", "full_name", "phone", "cars.model", "agencies.name", "start_date", "end_date", "estimate", "status"],
+    status: { key: "status", options: ["pending", "confirmed", "cancelled"] },
+    fields: [],
+  },
   payments: {
     table: "payments", select: "*, customers(full_name), contracts(ref)", order: "paid_at",
     cols: ["ref", "paid_at", "customers.full_name", "contracts.ref", "amount", "method"],
@@ -55,11 +61,11 @@ const CONFIG: Partial<Record<Module, Config>> = {
 };
 
 const LABEL: Record<string, string> = {
-  "customers.full_name": "customer", "cars.model": "car", "cars.plate": "plate", "contracts.ref": "contracts", start_date: "from", end_date: "to",
+  "customers.full_name": "customer", "cars.model": "car", "cars.plate": "plate", "agencies.name": "agency", "contracts.ref": "contracts", start_date: "from", end_date: "to",
   paid_at: "date", spent_at: "date", scheduled_at: "date", created_at: "date", full_name: "fullName", is_read: "status", body: "message",
   customer_id: "customer", car_id: "car", contract_id: "contracts", note: "notes", category: "type",
 };
-const MONEY = ["total", "amount", "cost"];
+const MONEY = ["total", "amount", "cost", "estimate"];
 const TRANSLATED = ["category", "method", "title", "action", "entity"];
 const get = (r: AnyRow, path: string) => path.split(".").reduce((o, k) => (o == null ? o : o[k]), r);
 
