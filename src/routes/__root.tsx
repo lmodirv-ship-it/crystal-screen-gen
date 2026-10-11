@@ -12,6 +12,7 @@ import { useEffect, type ReactNode } from "react";
 
 import appCss from "../styles.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
+import { BgPicker } from "../components/BgPicker";
 
 function NotFoundComponent() {
   return (
@@ -130,6 +131,8 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      {/* Background color picker: floating at the top of every page. */}
+      <BgPicker />
       {/* Brand credit: shown at the bottom of every page, including 404 and error screens. */}
       <SiteCredit />
     </QueryClientProvider>
