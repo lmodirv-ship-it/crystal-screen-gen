@@ -8,3 +8,8 @@
 - WhatsApp alerts to 0668546358 — waiting on the user to complete the WhatsApp connect card (connector still not linked).
 - Password reset: no "forgot password" screen in the app yet.
 - Google account izem.irru.1@outlook.com is still a customer — the user hasn't said whether to keep or remove it.
+- Agency switcher (owner/developer header) filtering cars/customers/contracts/payments/expenses
+- Printable A4 contract + invoice (/app/contracts/$id)
+- Smart alerts on staff dashboards (insurance, inspection, oil change, maintenance, returns)
+- WhatsApp one-click templates on contracts (wa.me)
+- Public online booking (/book) → "Online requests" page for staff
