@@ -155,12 +155,12 @@ function ManagerDash() {
     ...bookings.filter((b) => b.start_date === today || (b.start_date > today && b.status === "pending")).map((b) => ({ k: b.id, text: `${t("bookings")} — ${b.cars?.model}`, sub: b.customers?.full_name, tone: "tile-blue" })),
   ].slice(0, 6);
   const quick: [typeof Car, string, string, string][] = [
-    [FilePlus2, "createContract", "contracts/new", "text-success"],
-    [CalendarDays, "bookings", "bookings", "text-primary"],
-    [UserPlus, "addCustomer", "customers", "text-violet"],
-    [Upload, "uploadDoc", "documents", "text-cyan"],
-    [Wrench, "addMaintenance", "maintenance", "text-pink"],
-    [Car, "cars", "cars", "text-warn"],
+    [FilePlus2, "createContract", "contracts/new", "tile-green"],
+    [CalendarDays, "bookings", "bookings", "tile-blue"],
+    [UserPlus, "addCustomer", "customers", "tile-violet"],
+    [Upload, "uploadDoc", "documents", "tile-cyan"],
+    [Wrench, "addMaintenance", "maintenance", "tile-pink"],
+    [Car, "cars", "cars", "tile-orange"],
   ];
   return (
     <div className="space-y-5">
@@ -179,8 +179,8 @@ function ManagerDash() {
         <Panel title={t("quickActions")}>
           <div className="grid grid-cols-3 gap-3">
             {quick.map(([I, k, to, c]) => (
-              <Link key={k} to={`/${lang}/app/${to}` as "/"} className="flex flex-col items-center gap-2 rounded-xl border border-border bg-muted/40 p-3 text-center text-xs font-bold hover:bg-accent">
-                <I className={`h-6 w-6 ${c}`} />{t(k)}
+              <Link key={k} to={`/${lang}/app/${to}` as "/"} className="card flex flex-col items-center gap-2 p-3 text-center text-xs font-bold">
+                <span className={`tile h-10 w-10 ${c}`}><I className="h-5 w-5" /></span>{t(k)}
               </Link>
             ))}
           </div>
