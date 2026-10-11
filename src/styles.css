@@ -148,3 +148,10 @@
   .card { transition: transform .25s, box-shadow .25s; }
   @media (prefers-reduced-motion: reduce) { *, *::after { transition: none !important; animation: none !important; } }
 }
+
+@media print {
+  aside, header.sticky, .no-print, [data-bg-picker], footer { display: none !important; }
+  body { background: white !important; }
+  main { padding: 0 !important; }
+  .print-sheet { box-shadow: none !important; max-width: none !important; background: white !important; color: black !important; }
+}
