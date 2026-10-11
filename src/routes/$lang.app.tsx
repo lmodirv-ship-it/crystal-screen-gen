@@ -2,7 +2,7 @@ import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import {
-  Bell, BarChart3, Car, CalendarDays, FileText, FolderOpen, Home, LogOut, Menu, Receipt, ScrollText, Search, Settings, Users, Wallet, Wrench,
+  Bell, BarChart3, Building2, Car, CalendarDays, FileText, FolderOpen, Home, LogOut, Menu, Receipt, ScrollText, Search, Settings, Users, Wallet, Wrench,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { isLang, translator } from "@/lib/i18n";
@@ -31,7 +31,7 @@ export const Route = createFileRoute("/$lang/app")({
 });
 
 const ICONS: Record<Module, typeof Home> = {
-  dashboard: Home, cars: Car, customers: Users, bookings: CalendarDays, contracts: FileText, payments: Wallet,
+  dashboard: Home, agencies: Building2, cars: Car, customers: Users, bookings: CalendarDays, contracts: FileText, payments: Wallet,
   expenses: Receipt, maintenance: Wrench, documents: FolderOpen, notifications: Bell, reports: BarChart3, settings: Settings, audit: ScrollText,
 };
 const CUSTOMER_LABEL: Partial<Record<Module, string>> = { bookings: "myBookings", contracts: "myContracts", payments: "myPayments", documents: "myDocuments" };

@@ -4,7 +4,7 @@ export type Role = (typeof ROLES)[number];
 export const primaryRole = (roles: Role[]): Role => ROLES.find((r) => roles.includes(r)) ?? "customer";
 
 export const MODULES = [
-  "dashboard", "cars", "customers", "bookings", "contracts", "payments", "expenses", "maintenance",
+  "dashboard", "agencies", "cars", "customers", "bookings", "contracts", "payments", "expenses", "maintenance",
   "documents", "notifications", "reports", "settings", "audit",
 ] as const;
 export type Module = (typeof MODULES)[number];
