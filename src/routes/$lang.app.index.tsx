@@ -48,8 +48,8 @@ function Dashboard() {
           <ul className="divide-y divide-border">
             {TABLES.alerts.rows.map((a) => (
               <li key={a["ref"]} className="flex items-center justify-between gap-3 py-3 text-sm">
-                <span>{}</span>
-                <Badge value={String()} label={t(String())} />
+                <span>{a["message"]}</span>
+                <Badge value={String(a["priority"])} label={t(String(a["priority"]))} />
               </li>
             ))}
           </ul>
