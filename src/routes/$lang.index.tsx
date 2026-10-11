@@ -53,7 +53,7 @@ function Home() {
             ) : (
               <>
                 <Link to="/$lang/auth" params={{ lang: l }} className="btn-ghost hidden sm:inline-flex">{t("signIn")}</Link>
-                <Link to="/$lang/app/$module" params={{ lang: l, module: "bookings" }} className="btn-primary"><CalendarDays className="h-4 w-4" />{t("bookNow")}</Link>
+                <Link to="/$lang/book" params={{ lang: l }} search={{}} className="btn-primary"><CalendarDays className="h-4 w-4" />{t("bookNow")}</Link>
               </>
             )}
           </div>
@@ -83,7 +83,7 @@ function Home() {
           <label className="flex items-center gap-2 rounded-lg border border-border px-3 py-2"><CalendarDays className="h-5 w-5 text-primary" /><div className="text-xs"><div className="font-bold">{t("pickupDate")}</div><input type="date" className="bg-transparent text-sm" /></div></label>
           <label className="flex items-center gap-2 rounded-lg border border-border px-3 py-2"><CalendarDays className="h-5 w-5 text-primary" /><div className="text-xs"><div className="font-bold">{t("returnDate")}</div><input type="date" className="bg-transparent text-sm" /></div></label>
           <label className="flex items-center gap-2 rounded-lg border border-border px-3 py-2"><Car className="h-5 w-5 text-primary" /><div className="text-xs"><div className="font-bold">{t("carType")}</div><select className="bg-transparent text-sm"><option>{t("all")}</option>{CATEGORIES.map((c) => <option key={c}>{t(c)}</option>)}</select></div></label>
-          <a href="#fleet" className="btn-primary text-base"><Search className="h-5 w-5" />{t("searchCars")}</a>
+          <Link to="/$lang/book" params={{ lang: l }} search={{}} className="btn-primary text-base"><Search className="h-5 w-5" />{t("onlineBooking")}</Link>
         </div>
       </div>
 
@@ -126,7 +126,7 @@ function Home() {
                 <div className="mt-1 flex gap-3 text-xs text-muted-foreground"><span>{c.year}</span><span>{t(c.fuel)}</span><span>{t(c.transmission)}</span></div>
                 <div className="mt-4 flex items-center justify-between">
                   <div className="font-display text-xl font-black text-primary">{c.price_per_day} <span className="text-sm">{t("perDay")}</span></div>
-                  <Link to="/$lang/app/$module" params={{ lang: l, module: "bookings" }} className="btn-primary">{t("bookNow")}</Link>
+                  <Link to="/$lang/book" params={{ lang: l }} search={{ car: c.id }} className="btn-primary">{t("bookNow")}</Link>
                 </div>
               </div>
             </div>
