@@ -13,3 +13,4 @@
 - Smart alerts on staff dashboards (insurance, inspection, oil change, maintenance, returns)
 - WhatsApp one-click templates on contracts (wa.me)
 - Public online booking (/book) → "Online requests" page for staff
+- Manager (المسير) login: lmodirv@gmail.com + its own password
