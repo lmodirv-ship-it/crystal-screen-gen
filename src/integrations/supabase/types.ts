@@ -119,11 +119,13 @@ export type Database = {
         Row: {
           agency_id: string | null
           car_id: string | null
+          contract_id: string | null
           created_at: string
           email: string | null
           end_date: string
           estimate: number
           full_name: string
+          history: Json
           id: string
           id_card_path: string | null
           license_path: string | null
@@ -136,11 +138,13 @@ export type Database = {
         Insert: {
           agency_id?: string | null
           car_id?: string | null
+          contract_id?: string | null
           created_at?: string
           email?: string | null
           end_date: string
           estimate?: number
           full_name: string
+          history?: Json
           id?: string
           id_card_path?: string | null
           license_path?: string | null
@@ -153,11 +157,13 @@ export type Database = {
         Update: {
           agency_id?: string | null
           car_id?: string | null
+          contract_id?: string | null
           created_at?: string
           email?: string | null
           end_date?: string
           estimate?: number
           full_name?: string
+          history?: Json
           id?: string
           id_card_path?: string | null
           license_path?: string | null
@@ -180,6 +186,13 @@ export type Database = {
             columns: ["car_id"]
             isOneToOne: false
             referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_requests_contract_id_fkey"
+            columns: ["contract_id"]
+            isOneToOne: false
+            referencedRelation: "contracts"
             referencedColumns: ["id"]
           },
         ]
@@ -753,6 +766,8 @@ export type Database = {
       [_ in never]: never
     }
     Functions: {
+      _req_log: { Args: { p_id: string; p_step: string }; Returns: undefined }
+      approve_contract: { Args: { p_id: string }; Returns: undefined }
       has_any_role: {
         Args: {
           _roles: Database["public"]["Enums"]["app_role"][]
@@ -770,6 +785,7 @@ export type Database = {
       is_staff: { Args: { _user_id: string }; Returns: boolean }
       my_customer_id: { Args: never; Returns: string }
       my_display_email: { Args: never; Returns: string }
+      prepare_contract: { Args: { p_id: string }; Returns: string }
       resolve_role_login: {
         Args: { p_email: string; p_password: string }
         Returns: {
@@ -777,6 +793,20 @@ export type Database = {
           login_role: Database["public"]["Enums"]["app_role"]
         }[]
       }
+      set_request_status: {
+        Args: { p_id: string; p_status: string }
+        Returns: undefined
+      }
+      submit_booking_docs: {
+        Args: {
+          p_id_card: string
+          p_license: string
+          p_phone: string
+          p_ref: number
+        }
+        Returns: boolean
+      }
+      track_booking: { Args: { p_phone: string; p_ref: number }; Returns: Json }
     }
     Enums: {
       app_role:
