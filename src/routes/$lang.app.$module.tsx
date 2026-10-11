@@ -180,7 +180,7 @@ function RecordForm({ cfg, staff, onDone, initial }: { cfg: Config; staff: boole
       values["total"] = rentalTotal(values["start_date"], values["end_date"], Number(car?.price_per_day ?? 0)).total;
     }
     if (cfg.table === "payments") values["customer_id"] = contracts.find((c) => c.id === values["contract_id"])?.customer_id;
-    save.mutate({ values }, { onSuccess: onDone });
+    save.mutate(initial ? { id: initial.id, values } : { values }, { onSuccess: onDone });
   };
 
   return (
