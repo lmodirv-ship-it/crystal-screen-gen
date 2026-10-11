@@ -115,6 +115,75 @@ export type Database = {
         }
         Relationships: []
       }
+      booking_requests: {
+        Row: {
+          agency_id: string | null
+          car_id: string | null
+          created_at: string
+          email: string | null
+          end_date: string
+          estimate: number
+          full_name: string
+          id: string
+          id_card_path: string | null
+          license_path: string | null
+          notes: string | null
+          phone: string
+          ref: number
+          start_date: string
+          status: string
+        }
+        Insert: {
+          agency_id?: string | null
+          car_id?: string | null
+          created_at?: string
+          email?: string | null
+          end_date: string
+          estimate?: number
+          full_name: string
+          id?: string
+          id_card_path?: string | null
+          license_path?: string | null
+          notes?: string | null
+          phone: string
+          ref?: number
+          start_date: string
+          status?: string
+        }
+        Update: {
+          agency_id?: string | null
+          car_id?: string | null
+          created_at?: string
+          email?: string | null
+          end_date?: string
+          estimate?: number
+          full_name?: string
+          id?: string
+          id_card_path?: string | null
+          license_path?: string | null
+          notes?: string | null
+          phone?: string
+          ref?: number
+          start_date?: string
+          status?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "booking_requests_agency_id_fkey"
+            columns: ["agency_id"]
+            isOneToOne: false
+            referencedRelation: "agencies"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "booking_requests_car_id_fkey"
+            columns: ["car_id"]
+            isOneToOne: false
+            referencedRelation: "cars"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       bookings: {
         Row: {
           car_id: string
@@ -176,9 +245,11 @@ export type Database = {
           created_at: string
           fuel: string
           id: string
+          inspection_expiry: string | null
           insurance_expiry: string | null
           mileage: number
           model: string
+          next_service_km: number | null
           plate: string
           price_per_day: number
           status: string
@@ -191,9 +262,11 @@ export type Database = {
           created_at?: string
           fuel?: string
           id?: string
+          inspection_expiry?: string | null
           insurance_expiry?: string | null
           mileage?: number
           model: string
+          next_service_km?: number | null
           plate: string
           price_per_day?: number
           status?: string
@@ -206,9 +279,11 @@ export type Database = {
           created_at?: string
           fuel?: string
           id?: string
+          inspection_expiry?: string | null
           insurance_expiry?: string | null
           mileage?: number
           model?: string
+          next_service_km?: number | null
           plate?: string
           price_per_day?: number
           status?: string

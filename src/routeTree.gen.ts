@@ -14,6 +14,7 @@ import { Route as LangRouteImport } from './routes/$lang'
 import { Route as LangIndexRouteImport } from './routes/$lang.index'
 import { Route as LangAppRouteImport } from './routes/$lang.app'
 import { Route as LangAuthRouteImport } from './routes/$lang.auth'
+import { Route as LangBookRouteImport } from './routes/$lang.book'
 import { Route as LangAppIndexRouteImport } from './routes/$lang.app.index'
 import { Route as LangAppModuleRouteImport } from './routes/$lang.app.$module'
 import { Route as LangAppAgenciesRouteImport } from './routes/$lang.app.agencies'
@@ -22,6 +23,7 @@ import { Route as LangAppDocumentsRouteImport } from './routes/$lang.app.documen
 import { Route as LangAppReportsRouteImport } from './routes/$lang.app.reports'
 import { Route as LangAppSettingsRouteImport } from './routes/$lang.app.settings'
 import { Route as LangAppContractsIndexRouteImport } from './routes/$lang.app.contracts.index'
+import { Route as LangAppContractsIdRouteImport } from './routes/$lang.app.contracts.$id'
 import { Route as LangAppContractsNewRouteImport } from './routes/$lang.app.contracts.new'
 
 const IndexRoute = IndexRouteImport.update({
@@ -47,6 +49,11 @@ const LangAppRoute = LangAppRouteImport.update({
 const LangAuthRoute = LangAuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangBookRoute = LangBookRouteImport.update({
+  id: '/book',
+  path: '/book',
   getParentRoute: () => LangRoute,
 } as any)
 const LangAppIndexRoute = LangAppIndexRouteImport.update({
@@ -89,6 +96,11 @@ const LangAppContractsIndexRoute = LangAppContractsIndexRouteImport.update({
   path: '/contracts/',
   getParentRoute: () => LangAppRoute,
 } as any)
+const LangAppContractsIdRoute = LangAppContractsIdRouteImport.update({
+  id: '/contracts/$id',
+  path: '/contracts/$id',
+  getParentRoute: () => LangAppRoute,
+} as any)
 const LangAppContractsNewRoute = LangAppContractsNewRouteImport.update({
   id: '/contracts/new',
   path: '/contracts/new',
@@ -100,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/$lang': typeof LangRouteWithChildren
   '/$lang/app': typeof LangAppRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/book': typeof LangBookRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
   '/$lang/app/agencies': typeof LangAppAgenciesRoute
@@ -108,12 +121,14 @@ export interface FileRoutesByFullPath {
   '/$lang/app/reports': typeof LangAppReportsRoute
   '/$lang/app/settings': typeof LangAppSettingsRoute
   '/$lang/app/': typeof LangAppIndexRoute
+  '/$lang/app/contracts/$id': typeof LangAppContractsIdRoute
   '/$lang/app/contracts/new': typeof LangAppContractsNewRoute
   '/$lang/app/contracts/': typeof LangAppContractsIndexRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/book': typeof LangBookRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
   '/$lang/app/agencies': typeof LangAppAgenciesRoute
@@ -122,6 +137,7 @@ export interface FileRoutesByTo {
   '/$lang/app/reports': typeof LangAppReportsRoute
   '/$lang/app/settings': typeof LangAppSettingsRoute
   '/$lang/app': typeof LangAppIndexRoute
+  '/$lang/app/contracts/$id': typeof LangAppContractsIdRoute
   '/$lang/app/contracts/new': typeof LangAppContractsNewRoute
   '/$lang/app/contracts': typeof LangAppContractsIndexRoute
 }
@@ -131,6 +147,7 @@ export interface FileRoutesById {
   '/$lang': typeof LangRouteWithChildren
   '/$lang/app': typeof LangAppRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/book': typeof LangBookRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
   '/$lang/app/agencies': typeof LangAppAgenciesRoute
@@ -139,6 +156,7 @@ export interface FileRoutesById {
   '/$lang/app/reports': typeof LangAppReportsRoute
   '/$lang/app/settings': typeof LangAppSettingsRoute
   '/$lang/app/': typeof LangAppIndexRoute
+  '/$lang/app/contracts/$id': typeof LangAppContractsIdRoute
   '/$lang/app/contracts/new': typeof LangAppContractsNewRoute
   '/$lang/app/contracts/': typeof LangAppContractsIndexRoute
 }
@@ -149,6 +167,7 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/$lang/app'
     | '/$lang/auth'
+    | '/$lang/book'
     | '/$lang/'
     | '/$lang/app/$module'
     | '/$lang/app/agencies'
@@ -157,12 +176,14 @@ export interface FileRouteTypes {
     | '/$lang/app/reports'
     | '/$lang/app/settings'
     | '/$lang/app/'
+    | '/$lang/app/contracts/$id'
     | '/$lang/app/contracts/new'
     | '/$lang/app/contracts/'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$lang/auth'
+    | '/$lang/book'
     | '/$lang'
     | '/$lang/app/$module'
     | '/$lang/app/agencies'
@@ -171,6 +192,7 @@ export interface FileRouteTypes {
     | '/$lang/app/reports'
     | '/$lang/app/settings'
     | '/$lang/app'
+    | '/$lang/app/contracts/$id'
     | '/$lang/app/contracts/new'
     | '/$lang/app/contracts'
   id:
@@ -179,6 +201,7 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/$lang/app'
     | '/$lang/auth'
+    | '/$lang/book'
     | '/$lang/'
     | '/$lang/app/$module'
     | '/$lang/app/agencies'
@@ -187,6 +210,7 @@ export interface FileRouteTypes {
     | '/$lang/app/reports'
     | '/$lang/app/settings'
     | '/$lang/app/'
+    | '/$lang/app/contracts/$id'
     | '/$lang/app/contracts/new'
     | '/$lang/app/contracts/'
   fileRoutesById: FileRoutesById
@@ -231,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/$lang/auth'
       preLoaderRoute: typeof LangAuthRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/book': {
+      id: '/$lang/book'
+      path: '/book'
+      fullPath: '/$lang/book'
+      preLoaderRoute: typeof LangBookRouteImport
       parentRoute: typeof LangRoute
     }
     '/$lang/app/': {
@@ -289,6 +320,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAppContractsIndexRouteImport
       parentRoute: typeof LangAppRoute
     }
+    '/$lang/app/contracts/$id': {
+      id: '/$lang/app/contracts/$id'
+      path: '/contracts/$id'
+      fullPath: '/$lang/app/contracts/$id'
+      preLoaderRoute: typeof LangAppContractsIdRouteImport
+      parentRoute: typeof LangAppRoute
+    }
     '/$lang/app/contracts/new': {
       id: '/$lang/app/contracts/new'
       path: '/contracts/new'
@@ -307,6 +345,7 @@ interface LangAppRouteChildren {
   LangAppReportsRoute: typeof LangAppReportsRoute
   LangAppSettingsRoute: typeof LangAppSettingsRoute
   LangAppIndexRoute: typeof LangAppIndexRoute
+  LangAppContractsIdRoute: typeof LangAppContractsIdRoute
   LangAppContractsNewRoute: typeof LangAppContractsNewRoute
   LangAppContractsIndexRoute: typeof LangAppContractsIndexRoute
 }
@@ -319,6 +358,7 @@ const LangAppRouteChildren: LangAppRouteChildren = {
   LangAppReportsRoute: LangAppReportsRoute,
   LangAppSettingsRoute: LangAppSettingsRoute,
   LangAppIndexRoute: LangAppIndexRoute,
+  LangAppContractsIdRoute: LangAppContractsIdRoute,
   LangAppContractsNewRoute: LangAppContractsNewRoute,
   LangAppContractsIndexRoute: LangAppContractsIndexRoute,
 }
@@ -329,12 +369,14 @@ const LangAppRouteWithChildren =
 interface LangRouteChildren {
   LangAppRoute: typeof LangAppRouteWithChildren
   LangAuthRoute: typeof LangAuthRoute
+  LangBookRoute: typeof LangBookRoute
   LangIndexRoute: typeof LangIndexRoute
 }
 
 const LangRouteChildren: LangRouteChildren = {
   LangAppRoute: LangAppRouteWithChildren,
   LangAuthRoute: LangAuthRoute,
+  LangBookRoute: LangBookRoute,
   LangIndexRoute: LangIndexRoute,
 }
 

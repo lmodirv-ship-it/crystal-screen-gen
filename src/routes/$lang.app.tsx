@@ -2,7 +2,7 @@ import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/
 import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import {
-  Bell, BarChart3, Building2, Car, CalendarDays, FileText, FolderOpen, Home, LogOut, Menu, Receipt, ScrollText, Search, Settings, Users, Wallet, Wrench,
+  Bell, BarChart3, Building2, Car, CalendarDays, FileText, FolderOpen, Home, Inbox, LogOut, Menu, Receipt, ScrollText, Search, Settings, Users, Wallet, Wrench,
 } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { isLang, translator } from "@/lib/i18n";
@@ -11,6 +11,7 @@ import { useAuth } from "@/lib/auth";
 import { useRows } from "@/lib/data";
 import { LangSwitch } from "@/components/LangSwitch";
 import { BrandLogo } from "@/components/BrandLogo";
+import { AgencySwitcher } from "@/components/AgencySwitcher";
 
 export const Route = createFileRoute("/$lang/app")({
   ssr: false,
@@ -32,7 +33,7 @@ export const Route = createFileRoute("/$lang/app")({
 });
 
 const ICONS: Record<Module, typeof Home> = {
-  dashboard: Home, agencies: Building2, cars: Car, customers: Users, bookings: CalendarDays, contracts: FileText, payments: Wallet,
+  dashboard: Home, agencies: Building2, cars: Car, customers: Users, bookings: CalendarDays, booking_requests: Inbox, contracts: FileText, payments: Wallet,
   expenses: Receipt, maintenance: Wrench, documents: FolderOpen, notifications: Bell, reports: BarChart3, settings: Settings, audit: ScrollText,
 };
 const CUSTOMER_LABEL: Partial<Record<Module, string>> = { bookings: "myBookings", contracts: "myContracts", payments: "myPayments", documents: "myDocuments" };
@@ -114,6 +115,7 @@ function AppShell() {
             <input className="input ps-9" placeholder={t("search")} />
           </div>
           <div className="ms-auto flex items-center gap-2">
+            {(role === "owner" || role === "developer") && <AgencySwitcher />}
             <LangSwitch lang={l} />
             <Link to="/$lang/app/$module" params={{ lang: l, module: "notifications" }} className="btn-ghost relative p-2" aria-label="notifications">
               <Bell className="h-5 w-5" />
