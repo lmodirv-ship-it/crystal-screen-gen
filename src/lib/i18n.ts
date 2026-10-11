@@ -273,7 +273,6 @@ const D: Record<string, [string, string, string]> = {
   trackBooking: ["Track my booking", "Suivre ma réservation", "تتبع حجزي"],
   trackHint: ["Keep this number: use it with your phone to follow your booking.", "Gardez ce numéro : avec votre téléphone il permet de suivre votre réservation.", "احتفظ بهذا الرقم: مع هاتفك تتابع به حجزك."],
   requestNo: ["Request number", "N° de demande", "رقم الطلب"],
-  search: ["Search", "Rechercher", "بحث"],
   notFoundReq: ["No request found with this number and phone.", "Aucune demande avec ce numéro et ce téléphone.", "لا يوجد طلب بهذا الرقم والهاتف."],
   st_pending: ["Under review", "En cours d'examen", "قيد المراجعة"],
   st_accepted: ["Accepted — send your documents", "Acceptée — envoyez vos documents", "مقبول — أرسل وثائقك"],
