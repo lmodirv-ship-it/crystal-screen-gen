@@ -1,33 +1,37 @@
-export const ROLES = ["developer", "owner", "manager", "operator", "accountant", "customer", "visitor"] as const;
+export const ROLES = ["developer", "owner", "manager", "operator", "accountant", "customer"] as const;
 export type Role = (typeof ROLES)[number];
+/** Highest-privilege role wins when a user has several. */
+export const primaryRole = (roles: Role[]): Role => ROLES.find((r) => roles.includes(r)) ?? "customer";
 
 export const MODULES = [
   "dashboard", "cars", "customers", "bookings", "contracts", "payments", "expenses", "maintenance",
-  "documents", "alerts", "reports", "settings", "audit",
+  "documents", "notifications", "reports", "settings", "audit",
 ] as const;
 export type Module = (typeof MODULES)[number];
 export const isModule = (v: string): v is Module => (MODULES as readonly string[]).includes(v);
 
 const ALL = [...MODULES];
 
-/** read = can see page; write = can create/edit records. */
+/** UI permissions — mirror the database RLS policies. read = page visible; write = can create/edit. */
 export const PERMISSIONS: Record<Role, { read: Module[]; write: Module[] }> = {
   developer: { read: ALL, write: ALL },
   owner: { read: ALL, write: ALL.filter((m) => m !== "audit") },
   manager: {
-    read: ["dashboard", "cars", "customers", "bookings", "contracts", "payments", "maintenance", "documents", "alerts", "reports"],
+    read: ["dashboard", "cars", "customers", "bookings", "contracts", "payments", "expenses", "maintenance", "documents", "notifications", "reports"],
     write: ["cars", "customers", "bookings", "contracts", "maintenance", "documents"],
   },
   operator: {
-    read: ["dashboard", "cars", "customers", "bookings", "contracts", "documents", "alerts"],
+    read: ["dashboard", "cars", "customers", "bookings", "contracts", "documents", "notifications"],
     write: ["customers", "bookings", "contracts", "documents"],
   },
   accountant: {
-    read: ["dashboard", "payments", "expenses", "contracts", "reports"],
+    read: ["dashboard", "payments", "expenses", "contracts", "reports", "notifications"],
     write: ["payments", "expenses"],
   },
-  customer: { read: ["dashboard", "bookings", "contracts", "payments", "documents"], write: ["bookings", "documents"] },
-  visitor: { read: [], write: [] },
+  customer: {
+    read: ["dashboard", "bookings", "contracts", "payments", "documents", "notifications"],
+    write: ["bookings", "documents"],
+  },
 };
 
 export const canRead = (r: Role, m: Module) => PERMISSIONS[r].read.includes(m);
