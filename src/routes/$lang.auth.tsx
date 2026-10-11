@@ -67,7 +67,7 @@ function AuthPage() {
     <div className="grid min-h-screen md:grid-cols-2">
       <div className="flex flex-col justify-center p-6 md:p-12">
         <div className="mb-8 flex items-center justify-between">
-          <Link to="/$lang" params={{ lang: l }} className="font-display text-2xl font-black">HN <span className="text-primary">RentCar</span></Link>
+          <BrandLogo lang={l} />
           <LangSwitch lang={l} />
         </div>
         <div className="mx-auto w-full max-w-sm">

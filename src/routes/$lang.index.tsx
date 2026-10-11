@@ -22,12 +22,8 @@ export const Route = createFileRoute("/$lang/")({
   component: Home,
 });
 
-function Logo() {
-  return (
-    <div className="leading-none">
-      <div className="font-display text-2xl font-black">HN <span className="text-primary">RentCar</span></div>
-    </div>
-  );
+function Logo({ lang }: { lang: "en" | "fr" | "ar" }) {
+  return <BrandLogo lang={lang} />;
 }
 
 function Home() {

@@ -68,10 +68,10 @@ function AppShell() {
 
   const sidebar = (
     <div className="flex h-full flex-col">
-      <Link to="/$lang" params={{ lang: l }} className="mb-5 block px-2 text-center">
-        <div className="font-display text-2xl font-black">HN <span className="text-primary">RentCar</span></div>
-        <div className="text-xs opacity-60">{t("appTag")}</div>
-      </Link>
+      <div className="mb-5 px-2 text-center">
+        <div className="flex justify-center"><BrandLogo lang={l} withText={false} size={56} /></div>
+        <div className="mt-1 text-xs opacity-60">{t("appTag")}</div>
+      </div>
       <div className="mb-4 flex items-center gap-3 rounded-xl bg-sidebar-accent p-3">
         <div className="grid h-11 w-11 place-items-center rounded-full bg-primary font-black text-primary-foreground">{(shownEmail || user?.email || "?")[0]?.toUpperCase()}</div>
         <div className="min-w-0 text-sm">
