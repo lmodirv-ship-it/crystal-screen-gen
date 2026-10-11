@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Palette, Check } from "lucide-react";
 
 const THEMES = [
-  { id: "default", label: "Blue", swatch: "oklch(0.55 0.21 260)" },
+  { id: "default", label: "TVCC", swatch: "oklch(0.72 0.15 225)" },
   { id: "violet", label: "Violet", swatch: "oklch(0.58 0.22 295)" },
   { id: "emerald", label: "Emerald", swatch: "oklch(0.6 0.17 160)" },
   { id: "sunset", label: "Sunset", swatch: "oklch(0.65 0.2 40)" },
