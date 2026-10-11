@@ -6,8 +6,17 @@ import { money } from "@/lib/data";
 import { remaining } from "@/lib/finance";
 import { useLang } from "@/components/kit";
 import { BrandLogo } from "@/components/BrandLogo";
+import { RentalAgreement } from "@/components/RentalAgreement";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/$lang/app/contracts/$id")({
+  head: () => ({ meta: [
+    { title: "Contrat de location et facture — HN RentCar" },
+    { name: "description", content: "Consultez et imprimez votre contrat de location bilingue et votre facture HN RentCar." },
+    { property: "og:title", content: "Contrat de location et facture — HN RentCar" },
+    { property: "og:description", content: "Contrat de location bilingue et facture de votre agence." },
+    { property: "og:type", content: "website" }, { name: "twitter:card", content: "summary" },
+  ] }),
   validateSearch: (s: Record<string, unknown>) => ({ doc: s["doc"] === "invoice" ? ("invoice" as const) : ("contract" as const) }),
   component: PrintDoc,
 });
@@ -21,7 +30,7 @@ function PrintDoc() {
     queryKey: ["contract-print", id],
     queryFn: async () => {
       const { data, error } = await supabase.from("contracts")
-        .select("*, customers(full_name, phone, email, city, license_no, license_expiry), cars(model, plate, year, fuel, category), payments(amount, paid_at, method), agencies(name, city, phone, email, address)")
+        .select("*, customers(full_name, phone, email, city, license_no, license_expiry), cars(model, plate, year, fuel, category), payments(amount, paid_at, method), agencies(name, city, phone, email, address, patente, rc, fiscal_id, ice)")
         .eq("id", id).single();
       if (error) throw error;
       return data as any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -39,9 +48,15 @@ function PrintDoc() {
         <Link to="/$lang/app/contracts" params={{ lang }} className="btn-ghost"><ArrowLeft className="h-4 w-4" />{t("contracts")}</Link>
         <Link to="/$lang/app/contracts/$id" params={{ lang, id }} search={{ doc: "contract" }} className={doc === "contract" ? "btn-primary" : "btn-ghost"}>{t("printContract")}</Link>
         <Link to="/$lang/app/contracts/$id" params={{ lang, id }} search={{ doc: "invoice" }} className={doc === "invoice" ? "btn-primary" : "btn-ghost"}>{t("invoice")}</Link>
-        <button className="btn-primary" onClick={() => window.print()}><Printer className="h-4 w-4" />{t("print")}</button>
+        <Button className="btn-primary" onClick={() => window.print()}><Printer className="h-4 w-4" />{t("print")}</Button>
       </div>
-      <article className="print-sheet mx-auto max-w-[210mm] rounded-xl bg-card p-8 text-sm shadow-card">
+      {doc === "contract" ? <RentalAgreement lang={lang} terms={t("terms")} data={{
+        ref: c.ref, startDate: c.start_date, endDate: c.end_date,
+        dailyRate: money(c.daily_rate, cur), total: money(c.total, cur), deposit: money(c.deposit, cur),
+        paid: money(paid, cur), rest: money(Number(c.total) - paid, cur), mileage: c.mileage_out,
+        renter: { name: c.customers?.full_name, phone: c.customers?.phone, address: c.customers?.city, license: c.customers?.license_no },
+        car: { model: c.cars?.model, plate: c.cars?.plate }, agency: ag,
+      }} /> : <article className="print-sheet mx-auto max-w-[210mm] rounded-xl bg-card p-8 text-sm shadow-card">
         <header className="mb-6 flex items-start justify-between border-b border-border pb-4">
           <div><BrandLogo lang={lang} /><div className="mt-2 text-xs text-muted-foreground">{ag.name} · {ag.address ?? ""} {ag.city ?? ""}<br /><span dir="ltr">{ag.phone ?? ""}</span> {ag.email ?? ""}</div></div>
           <div className="text-end"><div className="font-display text-2xl font-black">{doc === "invoice" ? t("invoice") : t("contracts")}</div><div className="font-bold">#{c.ref}</div><div className="text-xs text-muted-foreground">{new Date(c.created_at).toLocaleDateString()}</div></div>
@@ -71,7 +86,7 @@ function PrintDoc() {
             </div>
           </>
         )}
-      </article>
+      </article>}
     </div>
   );
 }

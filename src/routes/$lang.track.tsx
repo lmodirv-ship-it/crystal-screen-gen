@@ -1,12 +1,14 @@
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
-import { CheckCircle2, Circle, FileText, Printer, Search, Upload } from "lucide-react";
+import { CheckCircle2, Circle, Printer, Search, Upload } from "lucide-react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { isLang, translator } from "@/lib/i18n";
 import { money } from "@/lib/data";
 import { BrandLogo } from "@/components/BrandLogo";
 import { LangSwitch } from "@/components/LangSwitch";
+import { RentalAgreement } from "@/components/RentalAgreement";
+import { Button } from "@/components/ui/button";
 
 export const Route = createFileRoute("/$lang/track")({
   validateSearch: (s: Record<string, unknown>) => ({
@@ -76,7 +78,6 @@ function TrackPage() {
 
   const idx = data ? STEPS.indexOf(data.status) : -1;
   const k = data?.contract;
-  const row = (a: string, b: React.ReactNode) => <div className="flex justify-between gap-4 border-b border-dashed border-border py-1"><span className="text-muted-foreground">{a}</span><b>{b}</b></div>;
 
   return (
     <div className="min-h-screen bg-background">
@@ -109,16 +110,15 @@ function TrackPage() {
                 <button disabled={busy || !lic || !idc} onClick={sendDocs} className="btn-primary sm:col-span-2">{busy ? t("loading") : t("sendDocs")}</button>
               </div>)}
             {k && (
-              <article className="print-sheet card p-8 text-sm">
-                <div className="mb-4 flex items-start justify-between border-b border-border pb-4">
-                  <div><BrandLogo lang={l} /><div className="mt-2 text-xs text-muted-foreground">{data.agency} · {k.agency_address ?? ""} {k.agency_city ?? ""} <span dir="ltr">{k.agency_phone ?? ""}</span></div></div>
-                  <div className="text-end"><div className="flex items-center gap-2 font-display text-xl font-black"><FileText className="h-5 w-5" />{t("yourContract")}</div><b>#{k.ref}</b></div>
-                </div>
-                {row(t("renter"), data.full_name)}{row(t("car"), `${data.car} · ${k.plate}`)}{row(t("from"), k.start_date)}{row(t("to"), k.end_date)}
-                {row(t("perDay"), money(k.daily_rate, t("currency")))}{row(t("total"), money(k.total, t("currency")))}{row(t("deposit"), money(k.deposit, t("currency")))}
-                <div className="mt-10 grid grid-cols-2 gap-8 text-center text-xs text-muted-foreground"><div className="border-t border-border pt-2">{t("renter")} — {t("signature")}</div><div className="border-t border-border pt-2">{data.agency} — {t("signature")}</div></div>
-                <button onClick={() => window.print()} className="no-print btn-primary mt-6"><Printer className="h-4 w-4" />{t("print")}</button>
-              </article>)}
+              <div>
+                <Button onClick={() => window.print()} className="no-print btn-primary mb-4"><Printer className="h-4 w-4" />{t("print")}</Button>
+                <RentalAgreement lang={l} terms={t("terms")} data={{
+                  ref: k.ref, startDate: k.start_date, endDate: k.end_date,
+                  dailyRate: money(k.daily_rate, t("currency")), total: money(k.total, t("currency")), deposit: money(k.deposit, t("currency")),
+                  renter: { name: data.full_name, phone }, car: { model: data.car, plate: k.plate },
+                  agency: { name: data.agency ?? "HN RentCar", address: k.agency_address, city: k.agency_city, phone: k.agency_phone },
+                }} />
+              </div>)}
           </div>)}
       </main>
     </div>
