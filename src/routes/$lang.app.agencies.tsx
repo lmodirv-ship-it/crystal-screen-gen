@@ -87,12 +87,12 @@ function AgencyDetail({ agency, cars, members, write, onEdit }: { agency: AnyRow
 
   const setCar = async (id: string, agency_id: string | null) => {
     const { error } = await supabase.from("cars").update({ agency_id }).eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries();
   };
   const removeMember = async (id: string) => {
     const { error } = await supabase.from("agency_members").delete().eq("id", id);
-    if (error) return toast.error(error.message);
+    if (error) { toast.error(error.message); return; }
     qc.invalidateQueries();
   };
 
