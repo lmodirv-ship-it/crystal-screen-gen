@@ -14,6 +14,7 @@ import { Route as LangRouteImport } from './routes/$lang'
 import { Route as LangIndexRouteImport } from './routes/$lang.index'
 import { Route as LangAppRouteImport } from './routes/$lang.app'
 import { Route as LangAuthRouteImport } from './routes/$lang.auth'
+import { Route as LangBookRouteImport } from './routes/$lang.book'
 import { Route as LangAppIndexRouteImport } from './routes/$lang.app.index'
 import { Route as LangAppModuleRouteImport } from './routes/$lang.app.$module'
 import { Route as LangAppAgenciesRouteImport } from './routes/$lang.app.agencies'
@@ -48,6 +49,11 @@ const LangAppRoute = LangAppRouteImport.update({
 const LangAuthRoute = LangAuthRouteImport.update({
   id: '/auth',
   path: '/auth',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangBookRoute = LangBookRouteImport.update({
+  id: '/book',
+  path: '/book',
   getParentRoute: () => LangRoute,
 } as any)
 const LangAppIndexRoute = LangAppIndexRouteImport.update({
@@ -106,6 +112,7 @@ export interface FileRoutesByFullPath {
   '/$lang': typeof LangRouteWithChildren
   '/$lang/app': typeof LangAppRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/book': typeof LangBookRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
   '/$lang/app/agencies': typeof LangAppAgenciesRoute
@@ -121,6 +128,7 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/book': typeof LangBookRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
   '/$lang/app/agencies': typeof LangAppAgenciesRoute
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/$lang': typeof LangRouteWithChildren
   '/$lang/app': typeof LangAppRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/book': typeof LangBookRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
   '/$lang/app/agencies': typeof LangAppAgenciesRoute
@@ -158,6 +167,7 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/$lang/app'
     | '/$lang/auth'
+    | '/$lang/book'
     | '/$lang/'
     | '/$lang/app/$module'
     | '/$lang/app/agencies'
@@ -173,6 +183,7 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$lang/auth'
+    | '/$lang/book'
     | '/$lang'
     | '/$lang/app/$module'
     | '/$lang/app/agencies'
@@ -190,6 +201,7 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/$lang/app'
     | '/$lang/auth'
+    | '/$lang/book'
     | '/$lang/'
     | '/$lang/app/$module'
     | '/$lang/app/agencies'
@@ -243,6 +255,13 @@ declare module '@tanstack/react-router' {
       path: '/auth'
       fullPath: '/$lang/auth'
       preLoaderRoute: typeof LangAuthRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/book': {
+      id: '/$lang/book'
+      path: '/book'
+      fullPath: '/$lang/book'
+      preLoaderRoute: typeof LangBookRouteImport
       parentRoute: typeof LangRoute
     }
     '/$lang/app/': {
@@ -350,12 +369,14 @@ const LangAppRouteWithChildren =
 interface LangRouteChildren {
   LangAppRoute: typeof LangAppRouteWithChildren
   LangAuthRoute: typeof LangAuthRoute
+  LangBookRoute: typeof LangBookRoute
   LangIndexRoute: typeof LangIndexRoute
 }
 
 const LangRouteChildren: LangRouteChildren = {
   LangAppRoute: LangAppRouteWithChildren,
   LangAuthRoute: LangAuthRoute,
+  LangBookRoute: LangBookRoute,
   LangIndexRoute: LangIndexRoute,
 }
 
