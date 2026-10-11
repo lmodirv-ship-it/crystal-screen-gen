@@ -113,6 +113,16 @@ function RootShell({ children }: { children: ReactNode }) {
   );
 }
 
+function SiteCredit() {
+  return (
+    <footer className="border-t border-border bg-card px-4 py-3 text-center">
+      <p dir="ltr" className="text-xs font-bold tracking-wide text-muted-foreground">
+        Groupe-HN <span className="mx-1 text-primary">·</span> Mouylay Ismail El Hassani
+      </p>
+    </footer>
+  );
+}
+
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
 
@@ -120,6 +130,8 @@ function RootComponent() {
     <QueryClientProvider client={queryClient}>
       {/* Required: nested routes render here. Removing <Outlet /> breaks all child routes. */}
       <Outlet />
+      {/* Brand credit: shown at the bottom of every page, including 404 and error screens. */}
+      <SiteCredit />
     </QueryClientProvider>
   );
 }
