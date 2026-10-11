@@ -505,6 +505,30 @@ export type Database = {
         }
         Relationships: []
       }
+      role_logins: {
+        Row: {
+          created_at: string
+          display_email: string
+          id: string
+          login_email: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Insert: {
+          created_at?: string
+          display_email: string
+          id?: string
+          login_email: string
+          role: Database["public"]["Enums"]["app_role"]
+        }
+        Update: {
+          created_at?: string
+          display_email?: string
+          id?: string
+          login_email?: string
+          role?: Database["public"]["Enums"]["app_role"]
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -544,6 +568,14 @@ export type Database = {
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
       my_customer_id: { Args: never; Returns: string }
+      my_display_email: { Args: never; Returns: string }
+      resolve_role_login: {
+        Args: { p_email: string; p_password: string }
+        Returns: {
+          login: string
+          login_role: Database["public"]["Enums"]["app_role"]
+        }[]
+      }
     }
     Enums: {
       app_role:
