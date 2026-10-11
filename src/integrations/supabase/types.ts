@@ -467,6 +467,7 @@ export type Database = {
           doc_type: string
           file_path: string
           id: string
+          ref: number
           status: string
           title: string
           uploaded_by: string | null
@@ -479,6 +480,7 @@ export type Database = {
           doc_type?: string
           file_path: string
           id?: string
+          ref?: number
           status?: string
           title: string
           uploaded_by?: string | null
@@ -491,6 +493,7 @@ export type Database = {
           doc_type?: string
           file_path?: string
           id?: string
+          ref?: number
           status?: string
           title?: string
           uploaded_by?: string | null
@@ -528,6 +531,7 @@ export type Database = {
           created_at: string
           id: string
           label: string
+          ref: number
           spent_at: string
         }
         Insert: {
@@ -538,6 +542,7 @@ export type Database = {
           created_at?: string
           id?: string
           label: string
+          ref?: number
           spent_at?: string
         }
         Update: {
@@ -548,6 +553,7 @@ export type Database = {
           created_at?: string
           id?: string
           label?: string
+          ref?: number
           spent_at?: string
         }
         Relationships: [
@@ -574,6 +580,7 @@ export type Database = {
           created_at: string
           id: string
           mileage: number | null
+          ref: number
           scheduled_at: string
           status: string
           type: string
@@ -584,6 +591,7 @@ export type Database = {
           created_at?: string
           id?: string
           mileage?: number | null
+          ref?: number
           scheduled_at?: string
           status?: string
           type: string
@@ -594,6 +602,7 @@ export type Database = {
           created_at?: string
           id?: string
           mileage?: number | null
+          ref?: number
           scheduled_at?: string
           status?: string
           type?: string

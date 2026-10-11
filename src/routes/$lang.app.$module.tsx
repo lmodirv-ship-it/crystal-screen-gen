@@ -44,12 +44,12 @@ const CONFIG: Partial<Record<Module, Config>> = {
   },
   expenses: {
     table: "expenses", select: "*, cars(model)", order: "spent_at",
-    cols: ["spent_at", "category", "label", "cars.model", "amount"],
+    cols: ["ref", "spent_at", "category", "label", "cars.model", "amount"],
     fields: [{ key: "category", type: "select", options: ["maintenance", "fuel", "insurance", "wash", "admin", "other"] }, { key: "label", type: "text" }, { key: "amount", type: "number" }, { key: "car_id", type: "car" }, { key: "spent_at", type: "date" }],
   },
   maintenance: {
     table: "maintenance", select: "*, cars(model, plate)", order: "scheduled_at",
-    cols: ["cars.model", "cars.plate", "type", "cost", "mileage", "scheduled_at", "status"],
+    cols: ["ref", "cars.model", "cars.plate", "type", "cost", "mileage", "scheduled_at", "status"],
     status: { key: "status", options: ["scheduled", "in_progress", "done"] },
     fields: [{ key: "car_id", type: "car" }, { key: "type", type: "text" }, { key: "cost", type: "number" }, { key: "mileage", type: "number" }, { key: "scheduled_at", type: "date" }],
   },

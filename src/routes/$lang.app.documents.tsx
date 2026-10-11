@@ -75,7 +75,7 @@ function DocumentsPage() {
                 <div key={d.id} className="flex items-center gap-3 rounded-xl border border-border p-3">
                   <span className="tile h-11 w-11 tile-cyan"><FileImage className="h-5 w-5" /></span>
                   <div className="min-w-0 flex-1 text-sm">
-                    <div className="truncate font-bold">{d.title}</div>
+                    <div className="truncate font-bold">{d.ref ? <span className="text-primary" dir="ltr">#{d.ref} · </span> : null}{d.title}</div>
                     <div className="text-xs text-muted-foreground">{t(d.doc_type)} · {d.customers?.full_name ?? d.cars?.model ?? "—"}</div>
                     <div className="mt-1 flex items-center gap-2">
                       {staff && canWrite(role, "documents") ? (
