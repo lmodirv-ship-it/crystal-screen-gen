@@ -43,7 +43,10 @@ function AuthPage() {
     e.preventDefault();
     setBusy(true);
     if (mode === "in") {
-      const { error } = await supabase.auth.signInWithPassword({ email, password });
+      // Same email, one password per role: find which login this password belongs to before signing in.
+      const { data: hit } = await supabase.rpc("resolve_role_login", { p_email: email, p_password: password });
+      const login = hit?.[0]?.login ?? email;
+      const { error } = await supabase.auth.signInWithPassword({ email: login, password });
       if (error) toast.error(error.message);
     } else {
       const { data, error } = await supabase.auth.signUp({
