@@ -13,7 +13,7 @@ const ALL = [...MODULES];
 /** read = can see page; write = can create/edit records. */
 export const PERMISSIONS: Record<Role, { read: Module[]; write: Module[] }> = {
   developer: { read: ALL, write: ALL },
-  owner: { read: ALL.filter((m) => m !== "audit").concat("audit"), write: ALL.filter((m) => m !== "audit") },
+  owner: { read: ALL, write: ALL.filter((m) => m !== "audit") },
   manager: {
     read: ["dashboard", "cars", "customers", "bookings", "contracts", "payments", "maintenance", "documents", "alerts", "reports"],
     write: ["cars", "customers", "bookings", "contracts", "maintenance", "documents"],

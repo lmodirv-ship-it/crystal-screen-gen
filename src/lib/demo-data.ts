@@ -1,7 +1,8 @@
 import type { Module } from "./rbac";
 
 export const CURRENCY = "MAD";
-export type Row = Record<string, string | number>;
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type Row = { [k: string]: any };
 export type Table = { columns: string[]; status?: string; rows: Row[]; customerScoped?: boolean };
 
 export const FLEET = [
