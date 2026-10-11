@@ -1,8 +1,8 @@
 # Roadmap
 
 ## Current request
-- Adopt the supplied bilingual paper contract in staff printing and customer tracking, and verify A4 output.
-- Make the reference company the first owner agency with its address, phone and legal identifiers, retaining existing linked records.
+- [x] Adopt the supplied bilingual paper contract in staff printing and customer tracking, and verify A4 output.
+- [x] Make the reference company the first owner agency with its address, phone and legal identifiers, retaining existing linked records.
 
 ## Done
 - One email (lmodirv@gmail.com), three passwords, three roles: 065325849 = owner, 0653258499 = developer (admin), 065325849999 = accountant. Each password lands on its own dashboard; the workspace always shows the same email.

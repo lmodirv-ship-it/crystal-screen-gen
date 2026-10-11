@@ -196,7 +196,9 @@
   main { padding: 0 !important; }
   .print-sheet { box-shadow: none !important; max-width: none !important; background: var(--paper-surface) !important; color: var(--paper-ink) !important; }
   .rental-agreement { width: 100%; padding: 0; break-inside: avoid; print-color-adjust: exact; }
-  .rental-agreement .agreement-field { padding-top: .6mm; }
-  .rental-agreement .agreement-sign-space { min-height: 9mm; }
+  .rental-agreement .agreement-field { padding-top: .3mm; padding-bottom: .3mm; }
+  .rental-agreement .agreement-value { min-height: 3.5mm; }
+  .rental-agreement .agreement-sign-space { min-height: 7mm; }
+  .rental-agreement .agreement-header { padding-bottom: 2mm; }
   .agreement-section, .agreement-inspection, .agreement-final-signatures { break-inside: avoid; }
 }
