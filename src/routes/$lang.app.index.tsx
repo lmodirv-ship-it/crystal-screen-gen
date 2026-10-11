@@ -10,6 +10,7 @@ import { lastMonths, net, pctChange, remaining, sumByMonth } from "@/lib/finance
 import { carImage } from "@/lib/car-images";
 import { locale } from "@/lib/i18n";
 import { Badge, Empty, PageHead, Panel, StatTile, Table, useLang } from "@/components/kit";
+import { SmartAlerts } from "@/components/SmartAlerts";
 
 export const Route = createFileRoute("/$lang/app/")({ component: Dashboard });
 
@@ -32,11 +33,14 @@ function useFinance() {
 
 function Dashboard() {
   const { role } = useAuth();
-  if (role === "owner") return <OwnerDash />;
   if (role === "accountant") return <AccountantDash />;
-  if (role === "developer") return <DeveloperDash />;
   if (role === "customer") return <CustomerDash />;
-  return <ManagerDash />;
+  return (
+    <>
+      <SmartAlerts />
+      {role === "owner" ? <OwnerDash /> : role === "developer" ? <DeveloperDash /> : <ManagerDash />}
+    </>
+  );
 }
 
 function IncomeChart({ series }: { series: AnyRow[] }) {

@@ -11,6 +11,7 @@ import { useAuth } from "@/lib/auth";
 import { useRows } from "@/lib/data";
 import { LangSwitch } from "@/components/LangSwitch";
 import { BrandLogo } from "@/components/BrandLogo";
+import { AgencySwitcher } from "@/components/AgencySwitcher";
 
 export const Route = createFileRoute("/$lang/app")({
   ssr: false,
@@ -114,6 +115,7 @@ function AppShell() {
             <input className="input ps-9" placeholder={t("search")} />
           </div>
           <div className="ms-auto flex items-center gap-2">
+            {(role === "owner" || role === "developer") && <AgencySwitcher />}
             <LangSwitch lang={l} />
             <Link to="/$lang/app/$module" params={{ lang: l, module: "notifications" }} className="btn-ghost relative p-2" aria-label="notifications">
               <Bell className="h-5 w-5" />
