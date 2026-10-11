@@ -1,5 +1,5 @@
 import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
-import { useQueryClient } from "@tanstack/react-query";
+import { useQuery, useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
 import {
   Bell, BarChart3, Car, CalendarDays, FileText, FolderOpen, Home, LogOut, Menu, Receipt, ScrollText, Search, Settings, Users, Wallet, Wrench,
@@ -46,6 +46,14 @@ function AppShell() {
   const navigate = useNavigate();
   const { data: notes = [] } = useRows("notifications");
   const unread = notes.filter((n) => !n.is_read).length;
+  // The address the workspace shows: every role login looks like the same one.
+  const { data: shownEmail = "" } = useQuery({
+    queryKey: ["display-email"],
+    queryFn: async () => {
+      const { data } = await supabase.rpc("my_display_email");
+      return (data as string) ?? "";
+    },
+  });
 
   if (!ready || !role) return <div className="grid min-h-screen place-items-center text-muted-foreground">{t("loading")}</div>;
   const mods = PERMISSIONS[role].read;
@@ -65,9 +73,10 @@ function AppShell() {
         <div className="text-xs opacity-60">{t("appTag")}</div>
       </Link>
       <div className="mb-4 flex items-center gap-3 rounded-xl bg-sidebar-accent p-3">
-        <div className="grid h-11 w-11 place-items-center rounded-full bg-primary font-black text-primary-foreground">{(user?.email ?? "?")[0]?.toUpperCase()}</div>
+        <div className="grid h-11 w-11 place-items-center rounded-full bg-primary font-black text-primary-foreground">{(shownEmail || user?.email || "?")[0]?.toUpperCase()}</div>
         <div className="min-w-0 text-sm">
-          <div className="truncate font-bold">{user?.user_metadata?.["full_name"] ?? user?.email}</div>
+          <div className="truncate font-bold">{user?.user_metadata?.["full_name"] ?? shownEmail ?? user?.email}</div>
+          {shownEmail && <div className="truncate text-xs opacity-60">{shownEmail}</div>}
           <div className="opacity-70">{t("r_" + role)}</div>
           <div className="flex items-center gap-1 text-xs text-success"><span className="h-2 w-2 rounded-full bg-success" />{t("online")}</div>
         </div>
