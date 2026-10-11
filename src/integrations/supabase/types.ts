@@ -783,6 +783,7 @@ export type Database = {
         Returns: boolean
       }
       is_staff: { Args: { _user_id: string }; Returns: boolean }
+      latest_request_ref: { Args: { p_phone: string }; Returns: number }
       my_customer_id: { Args: never; Returns: string }
       my_display_email: { Args: never; Returns: string }
       prepare_contract: { Args: { p_id: string }; Returns: string }
