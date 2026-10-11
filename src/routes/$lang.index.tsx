@@ -7,6 +7,7 @@ import { useRows } from "@/lib/data";
 import { carImage, CATEGORIES } from "@/lib/car-images";
 import { useAuth } from "@/lib/auth";
 import { Badge } from "@/components/kit";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/$lang/")({
   head: () => ({
@@ -22,12 +23,8 @@ export const Route = createFileRoute("/$lang/")({
   component: Home,
 });
 
-function Logo() {
-  return (
-    <div className="leading-none">
-      <div className="font-display text-2xl font-black">HN <span className="text-primary">RentCar</span></div>
-    </div>
-  );
+function Logo({ lang }: { lang: "en" | "fr" | "ar" }) {
+  return <BrandLogo lang={lang} />;
 }
 
 function Home() {
@@ -42,7 +39,7 @@ function Home() {
     <div className="min-h-screen bg-background">
       <header className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
-          <Logo />
+          <Logo lang={l} />
           <nav className="hidden gap-6 text-sm font-bold md:flex">
             <a href="#top" className="text-primary">{t("home")}</a>
             <a href="#fleet">{t("cars")}</a>
@@ -155,7 +152,7 @@ function Home() {
 
       <footer id="contact" className="bg-sidebar py-10 text-sidebar-foreground">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-4">
-          <div><div className="font-display text-2xl font-black">HN <span className="text-primary">RentCar</span></div><div className="text-sm opacity-70">{t("appTag")}</div></div>
+          <div><BrandLogo lang={l} /><div className="mt-1 text-sm opacity-70">{t("appTag")}</div></div>
           <div className="space-y-1 text-sm">
             <div className="flex items-center gap-2"><Phone className="h-4 w-4" /> <span dir="ltr">+212 6 12 34 56 78</span></div>
             <div className="flex items-center gap-2"><Mail className="h-4 w-4" /> contact@hn-rentcar.com</div>

@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { createFileRoute, useNavigate } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/auth";
 import { Field } from "@/components/kit";
 import { LangSwitch } from "@/components/LangSwitch";
 import hero from "@/assets/hero-tangier.jpg";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/$lang/auth")({
   head: () => ({
@@ -67,7 +68,7 @@ function AuthPage() {
     <div className="grid min-h-screen md:grid-cols-2">
       <div className="flex flex-col justify-center p-6 md:p-12">
         <div className="mb-8 flex items-center justify-between">
-          <Link to="/$lang" params={{ lang: l }} className="font-display text-2xl font-black">HN <span className="text-primary">RentCar</span></Link>
+          <BrandLogo lang={l} />
           <LangSwitch lang={l} />
         </div>
         <div className="mx-auto w-full max-w-sm">
