@@ -17,8 +17,8 @@ function Dashboard() {
   const revenue = pays.reduce((s, p) => s + Number(), 0);
   const due = pays.reduce((s, p) => s + Number() - Number(), 0);
   const exp = TABLES.expenses.rows.reduce((s, e) => s + Number(), 0);
-  const util = Math.round((cars.filter((c) =>  === "rented").length / cars.length) * 100);
-  const active = TABLES.contracts.rows.filter((c) =>  === "active").length;
+  const util = Math.round((cars.filter((c) => c["status"] === "rented").length / cars.length) * 100);
+  const active = TABLES.contracts.rows.filter((c) => c["status"] === "active").length;
 
   const cards: Record<string, [string, string][]> = {
     owner: [["revenue", fmt(revenue)], ["netProfit", fmt(revenue - exp)], ["fleetUtil", util + "%"], ["outstanding", fmt(due)]],
@@ -27,9 +27,9 @@ function Dashboard() {
     accountant: [["revenue", fmt(revenue)], ["expensesMonth", fmt(exp)], ["netProfit", fmt(revenue - exp)], ["outstanding", fmt(due)]],
     developer: [["systemHealth", "99.98%"], ["users", "24"], ["errors", "0"], ["audit", String(TABLES.audit.rows.length)]],
     customer: [
-      ["myBookings", String(TABLES.bookings.rows.filter((b) =>  === DEMO_CUSTOMER).length)],
-      ["myBalance", fmt(pays.filter((p) =>  === DEMO_CUSTOMER).reduce((s, p) => s + Number() - Number(), 0))],
-      ["contracts", String(TABLES.contracts.rows.filter((c) =>  === DEMO_CUSTOMER).length)],
+      ["myBookings", String(TABLES.bookings.rows.filter((b) => b["customer"] === DEMO_CUSTOMER).length)],
+      ["myBalance", fmt(pays.filter((p) => p["customer"] === DEMO_CUSTOMER).reduce((s, p) => s + Number() - Number(), 0))],
+      ["contracts", String(TABLES.contracts.rows.filter((c) => c["status"] === DEMO_CUSTOMER).length)],
     ],
   };
 
