@@ -34,7 +34,7 @@ export function BgPicker() {
   };
 
   return (
-    <div className="fixed top-3 z-50 end-3" dir="ltr">
+    <div className="no-print fixed top-3 z-50 end-3" dir="ltr">
       <button
         type="button"
         aria-label="Choose background color"

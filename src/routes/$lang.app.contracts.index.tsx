@@ -1,6 +1,7 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useState } from "react";
-import { FilePlus2, FileText } from "lucide-react";
+import { FilePlus2, FileText, Printer, MessageCircle } from "lucide-react";
+import { waLink, WA_TEMPLATES, type WaKind } from "@/lib/whatsapp";
 import { canRead, canWrite } from "@/lib/rbac";
 import { useAuth } from "@/lib/auth";
 import { useRows, useSave, money } from "@/lib/data";
@@ -37,7 +38,7 @@ function ContractsPage() {
           {["", "active", "overdue", "closed"].map((s) => <button key={s} onClick={() => setSt(s)} className={st === s ? "btn-primary py-1.5" : "btn-ghost py-1.5"}>{s ? t(s) : t("all")}</button>)}
         </div>
         {shown.length === 0 ? <Empty /> : (
-          <Table head={["#", t("customer"), t("car"), t("from"), t("to"), t("total"), t("paid"), t("remaining"), t("deposit"), t("status"), ...(writable ? [t("actions")] : [])]}>
+          <Table head={["#", t("customer"), t("car"), t("from"), t("to"), t("total"), t("paid"), t("remaining"), t("deposit"), t("status"), t("actions")]}>
             {shown.map((r) => {
               const rest = remaining(r.total, r.payments ?? []);
               return (
@@ -51,7 +52,22 @@ function ContractsPage() {
                   <td className={rest > 0 ? "font-bold text-destructive" : "text-muted-foreground"}>{money(rest, cur)}</td>
                   <td>{money(r.deposit, cur)}</td>
                   <td><Badge value={r.status} /></td>
-                  {writable && <td>{r.status !== "closed" && <button className="btn-ghost py-1 text-xs" onClick={() => close(r)}>{t("closeContract")}</button>}</td>}
+                  <td><div className="flex flex-wrap items-center gap-1">
+                    <Link to="/$lang/app/contracts/$id" params={{ lang, id: r.id }} search={{ doc: "contract" }} className="btn-ghost p-1.5" aria-label={t("printContract")} title={t("printContract")}><Printer className="h-4 w-4" /></Link>
+                    {role !== "customer" && r.customers?.phone && (
+                      <label className="btn-ghost flex items-center gap-1 p-1 text-xs text-success" title={t("whatsapp")}><MessageCircle className="h-4 w-4" />
+                        <select aria-label={t("whatsapp")} className="w-6 bg-transparent" value="" onChange={(e) => {
+                          const k = e.target.value as WaKind; if (!k) return;
+                          const msg = WA_TEMPLATES[k]({ ref: r.ref, name: r.customers.full_name, car: `${r.cars?.model} ${r.cars?.plate}`, from: r.start_date, to: r.end_date, total: Number(r.total), rest, cur });
+                          window.open(waLink(r.customers.phone, msg), "_blank", "noopener");
+                        }}>
+                          <option value="">…</option>
+                          {(Object.keys(WA_TEMPLATES) as WaKind[]).map((k) => <option key={k} value={k}>{t("wa_" + k)}</option>)}
+                        </select>
+                      </label>
+                    )}
+                    {writable && r.status !== "closed" && <button className="btn-ghost py-1 text-xs" onClick={() => close(r)}>{t("closeContract")}</button>}
+                  </div></td>
                 </tr>
               );
             })}

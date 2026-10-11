@@ -22,6 +22,7 @@ import { Route as LangAppDocumentsRouteImport } from './routes/$lang.app.documen
 import { Route as LangAppReportsRouteImport } from './routes/$lang.app.reports'
 import { Route as LangAppSettingsRouteImport } from './routes/$lang.app.settings'
 import { Route as LangAppContractsIndexRouteImport } from './routes/$lang.app.contracts.index'
+import { Route as LangAppContractsIdRouteImport } from './routes/$lang.app.contracts.$id'
 import { Route as LangAppContractsNewRouteImport } from './routes/$lang.app.contracts.new'
 
 const IndexRoute = IndexRouteImport.update({
@@ -89,6 +90,11 @@ const LangAppContractsIndexRoute = LangAppContractsIndexRouteImport.update({
   path: '/contracts/',
   getParentRoute: () => LangAppRoute,
 } as any)
+const LangAppContractsIdRoute = LangAppContractsIdRouteImport.update({
+  id: '/contracts/$id',
+  path: '/contracts/$id',
+  getParentRoute: () => LangAppRoute,
+} as any)
 const LangAppContractsNewRoute = LangAppContractsNewRouteImport.update({
   id: '/contracts/new',
   path: '/contracts/new',
@@ -108,6 +114,7 @@ export interface FileRoutesByFullPath {
   '/$lang/app/reports': typeof LangAppReportsRoute
   '/$lang/app/settings': typeof LangAppSettingsRoute
   '/$lang/app/': typeof LangAppIndexRoute
+  '/$lang/app/contracts/$id': typeof LangAppContractsIdRoute
   '/$lang/app/contracts/new': typeof LangAppContractsNewRoute
   '/$lang/app/contracts/': typeof LangAppContractsIndexRoute
 }
@@ -122,6 +129,7 @@ export interface FileRoutesByTo {
   '/$lang/app/reports': typeof LangAppReportsRoute
   '/$lang/app/settings': typeof LangAppSettingsRoute
   '/$lang/app': typeof LangAppIndexRoute
+  '/$lang/app/contracts/$id': typeof LangAppContractsIdRoute
   '/$lang/app/contracts/new': typeof LangAppContractsNewRoute
   '/$lang/app/contracts': typeof LangAppContractsIndexRoute
 }
@@ -139,6 +147,7 @@ export interface FileRoutesById {
   '/$lang/app/reports': typeof LangAppReportsRoute
   '/$lang/app/settings': typeof LangAppSettingsRoute
   '/$lang/app/': typeof LangAppIndexRoute
+  '/$lang/app/contracts/$id': typeof LangAppContractsIdRoute
   '/$lang/app/contracts/new': typeof LangAppContractsNewRoute
   '/$lang/app/contracts/': typeof LangAppContractsIndexRoute
 }
@@ -157,6 +166,7 @@ export interface FileRouteTypes {
     | '/$lang/app/reports'
     | '/$lang/app/settings'
     | '/$lang/app/'
+    | '/$lang/app/contracts/$id'
     | '/$lang/app/contracts/new'
     | '/$lang/app/contracts/'
   fileRoutesByTo: FileRoutesByTo
@@ -171,6 +181,7 @@ export interface FileRouteTypes {
     | '/$lang/app/reports'
     | '/$lang/app/settings'
     | '/$lang/app'
+    | '/$lang/app/contracts/$id'
     | '/$lang/app/contracts/new'
     | '/$lang/app/contracts'
   id:
@@ -187,6 +198,7 @@ export interface FileRouteTypes {
     | '/$lang/app/reports'
     | '/$lang/app/settings'
     | '/$lang/app/'
+    | '/$lang/app/contracts/$id'
     | '/$lang/app/contracts/new'
     | '/$lang/app/contracts/'
   fileRoutesById: FileRoutesById
@@ -289,6 +301,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAppContractsIndexRouteImport
       parentRoute: typeof LangAppRoute
     }
+    '/$lang/app/contracts/$id': {
+      id: '/$lang/app/contracts/$id'
+      path: '/contracts/$id'
+      fullPath: '/$lang/app/contracts/$id'
+      preLoaderRoute: typeof LangAppContractsIdRouteImport
+      parentRoute: typeof LangAppRoute
+    }
     '/$lang/app/contracts/new': {
       id: '/$lang/app/contracts/new'
       path: '/contracts/new'
@@ -307,6 +326,7 @@ interface LangAppRouteChildren {
   LangAppReportsRoute: typeof LangAppReportsRoute
   LangAppSettingsRoute: typeof LangAppSettingsRoute
   LangAppIndexRoute: typeof LangAppIndexRoute
+  LangAppContractsIdRoute: typeof LangAppContractsIdRoute
   LangAppContractsNewRoute: typeof LangAppContractsNewRoute
   LangAppContractsIndexRoute: typeof LangAppContractsIndexRoute
 }
@@ -319,6 +339,7 @@ const LangAppRouteChildren: LangAppRouteChildren = {
   LangAppReportsRoute: LangAppReportsRoute,
   LangAppSettingsRoute: LangAppSettingsRoute,
   LangAppIndexRoute: LangAppIndexRoute,
+  LangAppContractsIdRoute: LangAppContractsIdRoute,
   LangAppContractsNewRoute: LangAppContractsNewRoute,
   LangAppContractsIndexRoute: LangAppContractsIndexRoute,
 }
