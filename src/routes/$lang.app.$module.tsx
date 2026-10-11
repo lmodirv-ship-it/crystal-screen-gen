@@ -1,6 +1,6 @@
 import { createFileRoute, Link, notFound } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
-import { Plus, FileSignature, Check } from "lucide-react";
+import { Plus, FileSignature, Check, Pencil } from "lucide-react";
 import { supabase } from "@/integrations/supabase/client";
 import { canRead, canWrite, isModule, type Module } from "@/lib/rbac";
 import { useAuth } from "@/lib/auth";
@@ -83,6 +83,8 @@ function ModulePage() {
   const isCustomer = role === "customer";
   const staff = !!role && !isCustomer;
   const writable = !!role && canWrite(role, m);
+  const [editing, setEditing] = useState<AnyRow | null>(null);
+  const canEdit = writable && staff && cfg.fields.length > 0;
   const cur = t("currency");
 
   const shown = useMemo(() => rows.filter((r) => (!st || (cfg.status && r[cfg.status.key] === st)) && JSON.stringify(r).toLowerCase().includes(q.toLowerCase())), [rows, q, st, cfg.status]);
@@ -130,7 +132,7 @@ function ModulePage() {
           )}
         </div>
         {isLoading ? <div className="py-8 text-center text-muted-foreground">{t("loading")}</div> : shown.length === 0 ? <Empty /> : (
-          <Table head={[...cfg.cols.map((c) => t(LABEL[c] ?? c)), ...(m === "bookings" && staff ? [t("actions")] : []), ...(m === "notifications" ? [t("actions")] : [])]}>
+          <Table head={[...cfg.cols.map((c) => t(LABEL[c] ?? c)), ...(m === "bookings" && staff ? [t("actions")] : []), ...(m === "notifications" ? [t("actions")] : []), ...(canEdit ? [t("edit")] : [])]}>
             {shown.map((r) => (
               <tr key={r.id} className="hover:bg-muted/40">
                 {cfg.cols.map((c) => <td key={c}>{cell(r, c)}</td>)}
@@ -142,25 +144,26 @@ function ModulePage() {
                   </td>
                 )}
                 {m === "notifications" && <td>{!r.is_read && <button className="btn-ghost py-1 text-xs" onClick={() => save.mutate({ id: r.id, values: { is_read: true } })}><Check className="h-3.5 w-3.5" />{t("markRead")}</button>}</td>}
+                {canEdit && <td><button className="btn-ghost py-1 text-xs" onClick={() => setEditing(r)}><Pencil className="h-3.5 w-3.5" />{t("edit")}</button></td>}
               </tr>
             ))}
           </Table>
         )}
       </div>
-      <Drawer open={open} onClose={() => setOpen(false)} title={`${t("new")} · ${title}`}>
-        <RecordForm cfg={cfg} staff={staff} onDone={() => setOpen(false)} />
+      <Drawer open={open || !!editing} onClose={() => { setOpen(false); setEditing(null); }} title={`${editing ? t("edit") : t("new")} · ${title}`}>
+        <RecordForm key={editing?.id ?? "new"} cfg={cfg} staff={staff} initial={editing} onDone={() => { setOpen(false); setEditing(null); }} />
       </Drawer>
     </div>
   );
 }
 
-function RecordForm({ cfg, staff, onDone }: { cfg: Config; staff: boolean; onDone: () => void }) {
+function RecordForm({ cfg, staff, onDone, initial }: { cfg: Config; staff: boolean; onDone: () => void; initial?: AnyRow | null }) {
   const { t } = useLang();
   const save = useSave(cfg.table, t("saved"));
   const { data: customers = [] } = useRows("customers", "id, full_name, created_at");
   const { data: cars = [] } = useRows("cars", "id, model, plate, price_per_day, status, created_at");
   const { data: contracts = [] } = useRows("contracts", "id, ref, customer_id, total, customers(full_name), created_at");
-  const [v, setV] = useState<AnyRow>({ paid_at: today(), spent_at: today(), scheduled_at: today(), method: "cash", category: "other" });
+  const [v, setV] = useState<AnyRow>(() => initial ? Object.fromEntries(cfg.fields.map((f) => [f.key, initial[f.key] ?? ""])) : { paid_at: today(), spent_at: today(), scheduled_at: today(), method: "cash", category: "other" });
   const set = (k: string, val: unknown) => setV((p: AnyRow) => ({ ...p, [k]: val }));
 
   const submit = async (e: React.FormEvent) => {
@@ -177,7 +180,7 @@ function RecordForm({ cfg, staff, onDone }: { cfg: Config; staff: boolean; onDon
       values["total"] = rentalTotal(values["start_date"], values["end_date"], Number(car?.price_per_day ?? 0)).total;
     }
     if (cfg.table === "payments") values["customer_id"] = contracts.find((c) => c.id === values["contract_id"])?.customer_id;
-    save.mutate({ values }, { onSuccess: onDone });
+    save.mutate(initial ? { id: initial.id, values } : { values }, { onSuccess: onDone });
   };
 
   return (
