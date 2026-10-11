@@ -278,7 +278,6 @@ const D: Record<string, [string, string, string]> = {
   estimate: ["Estimated cost", "Coût estimé", "التكلفة التقديرية"],
   sendRequest: ["Send request", "Envoyer la demande", "إرسال الطلب"],
   requestSent: ["Request sent! We will call you shortly.", "Demande envoyée ! Nous vous appelons bientôt.", "تم إرسال طلبك! سنتصل بك قريباً."],
-  days: ["days", "jours", "أيام"],
   signature: ["Signature", "Signature", "التوقيع"],
   renter: ["Renter", "Locataire", "المستأجر"],
   vehicle: ["Vehicle", "Véhicule", "السيارة"],

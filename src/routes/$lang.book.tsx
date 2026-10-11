@@ -55,7 +55,7 @@ function BookPage() {
 
   const submit = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!v.end_date || v.end_date < v.start_date) return toast.error(t("returnDate"));
+    if (!v.end_date || v.end_date < v.start_date) { toast.error(t("returnDate")); return; }
     setBusy(true);
     try {
       const [license_path, id_card_path] = [await upload(lic), await upload(idc)];
