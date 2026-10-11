@@ -89,7 +89,7 @@ function CarForm({ car, onDone }: { car: AnyRow; onDone: () => void }) {
     <form className="space-y-4" onSubmit={(e) => {
       e.preventDefault();
       const { id, created_at: _c, ...rest } = v;
-      save.mutate({ id, values: { ...rest, year: Number(rest.year), price_per_day: Number(rest.price_per_day), mileage: Number(rest.mileage ?? 0), insurance_expiry: rest.insurance_expiry || null } }, { onSuccess: onDone });
+      save.mutate({ id, values: { ...rest, year: Number(rest.year), price_per_day: Number(rest.price_per_day), mileage: Number(rest.mileage ?? 0), insurance_expiry: rest.insurance_expiry || null, inspection_expiry: rest.inspection_expiry || null, next_service_km: rest.next_service_km ? Number(rest.next_service_km) : null } }, { onSuccess: onDone });
     }}>
       <Field label={t("model")}><input className="input" required value={v.model ?? ""} onChange={(e) => set("model", e.target.value)} /></Field>
       <Field label={t("plate")}><input className="input" required dir="ltr" value={v.plate ?? ""} onChange={(e) => set("plate", e.target.value)} /></Field>
@@ -102,6 +102,8 @@ function CarForm({ car, onDone }: { car: AnyRow; onDone: () => void }) {
         <Field label={t("price_per_day")}><input className="input" type="number" value={v.price_per_day} onChange={(e) => set("price_per_day", e.target.value)} /></Field>
         <Field label={t("mileage")}><input className="input" type="number" value={v.mileage ?? 0} onChange={(e) => set("mileage", e.target.value)} /></Field>
         <Field label={t("insurance_expiry")}><input className="input" type="date" value={v.insurance_expiry ?? ""} onChange={(e) => set("insurance_expiry", e.target.value)} /></Field>
+        <Field label={t("inspection_expiry")}><input className="input" type="date" value={v.inspection_expiry ?? ""} onChange={(e) => set("inspection_expiry", e.target.value)} /></Field>
+        <Field label={t("next_service_km")}><input className="input" type="number" value={v.next_service_km ?? ""} onChange={(e) => set("next_service_km", e.target.value)} /></Field>
       </div>
       <div className="flex gap-2"><button className="btn-primary" disabled={save.isPending}>{t("save")}</button><button type="button" className="btn-ghost" onClick={onDone}>{t("cancel")}</button></div>
     </form>
