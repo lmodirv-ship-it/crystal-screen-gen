@@ -32,7 +32,7 @@ function DataTable({ module, t, writable, customer }: { module: keyof typeof TAB
   const [modal, setModal] = useState(false);
   const [draft, setDraft] = useState<Row>({});
 
-  const scoped = customer && def.customerScoped ? rows.filter((r) => r.customer === DEMO_CUSTOMER || r.owner === DEMO_CUSTOMER) : rows;
+  const scoped = customer && def.customerScoped ? rows.filter((r) =>  === DEMO_CUSTOMER ||  === DEMO_CUSTOMER) : rows;
   const statuses = def.status ? [...new Set(scoped.map((r) => String(r[def.status!])))] : [];
   const shown = useMemo(
     () => scoped.filter((r) => (!status || r[def.status!] === status) && Object.values(r).join(" ").toLowerCase().includes(q.toLowerCase())),
@@ -49,7 +49,7 @@ function DataTable({ module, t, writable, customer }: { module: keyof typeof TAB
   const add = () => {
     const r: Row = { ...draft };
     if (def.status && !r[def.status]) r[def.status] = statuses[0] ?? "pending";
-    if (customer && def.customerScoped) r.customer = DEMO_CUSTOMER;
+    if (customer && def.customerScoped)  = DEMO_CUSTOMER;
     setRows([r, ...rows]);
     setDraft({});
     setModal(false);
