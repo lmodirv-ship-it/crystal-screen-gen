@@ -50,7 +50,7 @@ export function PageHead({ title, sub, icon, children }: { title: string; sub?: 
   return (
     <div className="mb-6 flex flex-wrap items-center justify-between gap-4">
       <div className="flex items-center gap-3">
-        {icon && <div className="tile bg-accent text-accent-foreground">{icon}</div>}
+        {icon && <div className="tile tile-blue">{icon}</div>}
         <div>
           <h1 className="font-display text-3xl font-extrabold">{title}</h1>
           {sub && <p className="text-sm text-muted-foreground">{sub}</p>}

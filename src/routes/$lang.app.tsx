@@ -85,7 +85,7 @@ function AppShell() {
       <nav className="flex flex-1 flex-col gap-1 overflow-y-auto">
         {mods.map((m) => {
           const Icon = ICONS[m];
-          const inner = (<><Icon className="h-5 w-5" /><span className="flex-1">{label(m)}</span>{m === "notifications" && unread > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-destructive px-1 text-xs text-primary-foreground">{unread}</span>}</>);
+          const inner = (<><span className="nav-ic"><Icon className="h-[18px] w-[18px]" /></span><span className="flex-1">{label(m)}</span>{m === "notifications" && unread > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-destructive px-1 text-xs text-primary-foreground">{unread}</span>}</>);
           return m === "dashboard" ? (
             <Link key={m} to="/$lang/app" params={{ lang: l }} activeOptions={{ exact: true }} onClick={() => setOpen(false)} className="nav-link" activeProps={{ className: "nav-link-active" }}>{inner}</Link>
           ) : (
@@ -93,7 +93,7 @@ function AppShell() {
           );
         })}
       </nav>
-      <button onClick={signOut} className="nav-link mt-3 border border-sidebar-border"><LogOut className="h-5 w-5 text-destructive" />{t("signOut")}</button>
+      <button onClick={signOut} className="nav-link mt-3 border border-sidebar-border"><span className="nav-ic"><LogOut className="h-[18px] w-[18px] text-destructive" /></span>{t("signOut")}</button>
     </div>
   );
 
