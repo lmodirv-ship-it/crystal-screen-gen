@@ -37,7 +37,7 @@ function BookPage() {
   const [lic, setLic] = useState<File | null>(null);
   const [idc, setIdc] = useState<File | null>(null);
   const [busy, setBusy] = useState(false);
-  const [done, setDone] = useState(false);
+  const [done, setDone] = useState<number | null>(null);
   const set = (k: keyof typeof v, x: string) => setV((o) => ({ ...o, [k]: x }));
   const avail = cars.filter((c) => c.status === "available");
   const car = cars.find((c) => c.id === v.car_id);
@@ -64,7 +64,8 @@ function BookPage() {
         estimate, license_path, id_card_path,
       });
       if (error) throw error;
-      setDone(true);
+      const { data: ref } = await supabase.rpc("latest_request_ref", { p_phone: v.phone });
+      setDone(ref ?? 0);
     } catch (err) {
       toast.error((err as Error).message);
     } finally { setBusy(false); }
@@ -75,8 +76,8 @@ function BookPage() {
       <header className="border-b border-border bg-card/95"><div className="mx-auto flex max-w-5xl items-center justify-between px-4 py-3"><BrandLogo lang={l} /><LangSwitch lang={l} /></div></header>
       <main className="mx-auto max-w-5xl px-4 py-10">
         <h1 className="mb-6 flex items-center gap-3 font-display text-3xl font-black"><span className="tile tile-blue h-11 w-11"><CalendarDays className="h-5 w-5" /></span>{t("onlineBooking")}</h1>
-        {done ? (
-          <div className="card p-10 text-center"><CheckCircle2 className="mx-auto h-14 w-14 text-success" /><p className="mt-4 text-lg font-bold">{t("requestSent")}</p><Link to="/$lang" params={{ lang: l }} className="btn-primary mt-6 inline-flex">{t("home")}</Link></div>
+        {done !== null ? (
+          <div className="card p-10 text-center"><CheckCircle2 className="mx-auto h-14 w-14 text-success" /><p className="mt-4 text-lg font-bold">{t("requestSent")}</p>{done ? <p className="mt-2 font-display text-3xl font-black text-primary" dir="ltr">#{done}</p> : null}<p className="mt-2 text-sm text-muted-foreground">{t("trackHint")}</p><div className="mt-6 flex justify-center gap-2"><Link to="/$lang/track" params={{ lang: l }} search={{ ref: done ? String(done) : undefined, phone: v.phone }} className="btn-primary inline-flex">{t("trackBooking")}</Link><Link to="/$lang" params={{ lang: l }} className="btn-ghost inline-flex">{t("home")}</Link></div></div>
         ) : (
           <form onSubmit={submit} className="grid gap-6 lg:grid-cols-[1fr_320px]">
             <div className="card grid gap-4 p-6 sm:grid-cols-2">

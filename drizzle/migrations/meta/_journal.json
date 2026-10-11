@@ -50,6 +50,20 @@
       "when": 1791753439030,
       "tag": "0006_manager_role_login",
       "breakpoints": true
+    },
+    {
+      "idx": 7,
+      "version": "7",
+      "when": 1791754210911,
+      "tag": "0007_booking_lifecycle",
+      "breakpoints": true
+    },
+    {
+      "idx": 8,
+      "version": "7",
+      "when": 1791754229351,
+      "tag": "0008_latest_request_ref",
+      "breakpoints": true
     }
   ]
 }

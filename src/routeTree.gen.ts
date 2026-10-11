@@ -15,9 +15,11 @@ import { Route as LangIndexRouteImport } from './routes/$lang.index'
 import { Route as LangAppRouteImport } from './routes/$lang.app'
 import { Route as LangAuthRouteImport } from './routes/$lang.auth'
 import { Route as LangBookRouteImport } from './routes/$lang.book'
+import { Route as LangTrackRouteImport } from './routes/$lang.track'
 import { Route as LangAppIndexRouteImport } from './routes/$lang.app.index'
 import { Route as LangAppModuleRouteImport } from './routes/$lang.app.$module'
 import { Route as LangAppAgenciesRouteImport } from './routes/$lang.app.agencies'
+import { Route as LangAppBooking_requestsRouteImport } from './routes/$lang.app.booking_requests'
 import { Route as LangAppCarsRouteImport } from './routes/$lang.app.cars'
 import { Route as LangAppDocumentsRouteImport } from './routes/$lang.app.documents'
 import { Route as LangAppReportsRouteImport } from './routes/$lang.app.reports'
@@ -56,6 +58,11 @@ const LangBookRoute = LangBookRouteImport.update({
   path: '/book',
   getParentRoute: () => LangRoute,
 } as any)
+const LangTrackRoute = LangTrackRouteImport.update({
+  id: '/track',
+  path: '/track',
+  getParentRoute: () => LangRoute,
+} as any)
 const LangAppIndexRoute = LangAppIndexRouteImport.update({
   id: '/',
   path: '/',
@@ -69,6 +76,11 @@ const LangAppModuleRoute = LangAppModuleRouteImport.update({
 const LangAppAgenciesRoute = LangAppAgenciesRouteImport.update({
   id: '/agencies',
   path: '/agencies',
+  getParentRoute: () => LangAppRoute,
+} as any)
+const LangAppBooking_requestsRoute = LangAppBooking_requestsRouteImport.update({
+  id: '/booking_requests',
+  path: '/booking_requests',
   getParentRoute: () => LangAppRoute,
 } as any)
 const LangAppCarsRoute = LangAppCarsRouteImport.update({
@@ -113,9 +125,11 @@ export interface FileRoutesByFullPath {
   '/$lang/app': typeof LangAppRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
   '/$lang/book': typeof LangBookRoute
+  '/$lang/track': typeof LangTrackRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
   '/$lang/app/agencies': typeof LangAppAgenciesRoute
+  '/$lang/app/booking_requests': typeof LangAppBooking_requestsRoute
   '/$lang/app/cars': typeof LangAppCarsRoute
   '/$lang/app/documents': typeof LangAppDocumentsRoute
   '/$lang/app/reports': typeof LangAppReportsRoute
@@ -129,9 +143,11 @@ export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$lang/auth': typeof LangAuthRoute
   '/$lang/book': typeof LangBookRoute
+  '/$lang/track': typeof LangTrackRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
   '/$lang/app/agencies': typeof LangAppAgenciesRoute
+  '/$lang/app/booking_requests': typeof LangAppBooking_requestsRoute
   '/$lang/app/cars': typeof LangAppCarsRoute
   '/$lang/app/documents': typeof LangAppDocumentsRoute
   '/$lang/app/reports': typeof LangAppReportsRoute
@@ -148,9 +164,11 @@ export interface FileRoutesById {
   '/$lang/app': typeof LangAppRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
   '/$lang/book': typeof LangBookRoute
+  '/$lang/track': typeof LangTrackRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
   '/$lang/app/agencies': typeof LangAppAgenciesRoute
+  '/$lang/app/booking_requests': typeof LangAppBooking_requestsRoute
   '/$lang/app/cars': typeof LangAppCarsRoute
   '/$lang/app/documents': typeof LangAppDocumentsRoute
   '/$lang/app/reports': typeof LangAppReportsRoute
@@ -168,9 +186,11 @@ export interface FileRouteTypes {
     | '/$lang/app'
     | '/$lang/auth'
     | '/$lang/book'
+    | '/$lang/track'
     | '/$lang/'
     | '/$lang/app/$module'
     | '/$lang/app/agencies'
+    | '/$lang/app/booking_requests'
     | '/$lang/app/cars'
     | '/$lang/app/documents'
     | '/$lang/app/reports'
@@ -184,9 +204,11 @@ export interface FileRouteTypes {
     | '/'
     | '/$lang/auth'
     | '/$lang/book'
+    | '/$lang/track'
     | '/$lang'
     | '/$lang/app/$module'
     | '/$lang/app/agencies'
+    | '/$lang/app/booking_requests'
     | '/$lang/app/cars'
     | '/$lang/app/documents'
     | '/$lang/app/reports'
@@ -202,9 +224,11 @@ export interface FileRouteTypes {
     | '/$lang/app'
     | '/$lang/auth'
     | '/$lang/book'
+    | '/$lang/track'
     | '/$lang/'
     | '/$lang/app/$module'
     | '/$lang/app/agencies'
+    | '/$lang/app/booking_requests'
     | '/$lang/app/cars'
     | '/$lang/app/documents'
     | '/$lang/app/reports'
@@ -264,6 +288,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangBookRouteImport
       parentRoute: typeof LangRoute
     }
+    '/$lang/track': {
+      id: '/$lang/track'
+      path: '/track'
+      fullPath: '/$lang/track'
+      preLoaderRoute: typeof LangTrackRouteImport
+      parentRoute: typeof LangRoute
+    }
     '/$lang/app/': {
       id: '/$lang/app/'
       path: '/'
@@ -283,6 +314,13 @@ declare module '@tanstack/react-router' {
       path: '/agencies'
       fullPath: '/$lang/app/agencies'
       preLoaderRoute: typeof LangAppAgenciesRouteImport
+      parentRoute: typeof LangAppRoute
+    }
+    '/$lang/app/booking_requests': {
+      id: '/$lang/app/booking_requests'
+      path: '/booking_requests'
+      fullPath: '/$lang/app/booking_requests'
+      preLoaderRoute: typeof LangAppBooking_requestsRouteImport
       parentRoute: typeof LangAppRoute
     }
     '/$lang/app/cars': {
@@ -340,6 +378,7 @@ declare module '@tanstack/react-router' {
 interface LangAppRouteChildren {
   LangAppModuleRoute: typeof LangAppModuleRoute
   LangAppAgenciesRoute: typeof LangAppAgenciesRoute
+  LangAppBooking_requestsRoute: typeof LangAppBooking_requestsRoute
   LangAppCarsRoute: typeof LangAppCarsRoute
   LangAppDocumentsRoute: typeof LangAppDocumentsRoute
   LangAppReportsRoute: typeof LangAppReportsRoute
@@ -353,6 +392,7 @@ interface LangAppRouteChildren {
 const LangAppRouteChildren: LangAppRouteChildren = {
   LangAppModuleRoute: LangAppModuleRoute,
   LangAppAgenciesRoute: LangAppAgenciesRoute,
+  LangAppBooking_requestsRoute: LangAppBooking_requestsRoute,
   LangAppCarsRoute: LangAppCarsRoute,
   LangAppDocumentsRoute: LangAppDocumentsRoute,
   LangAppReportsRoute: LangAppReportsRoute,
@@ -370,6 +410,7 @@ interface LangRouteChildren {
   LangAppRoute: typeof LangAppRouteWithChildren
   LangAuthRoute: typeof LangAuthRoute
   LangBookRoute: typeof LangBookRoute
+  LangTrackRoute: typeof LangTrackRoute
   LangIndexRoute: typeof LangIndexRoute
 }
 
@@ -377,6 +418,7 @@ const LangRouteChildren: LangRouteChildren = {
   LangAppRoute: LangAppRouteWithChildren,
   LangAuthRoute: LangAuthRoute,
   LangBookRoute: LangBookRoute,
+  LangTrackRoute: LangTrackRoute,
   LangIndexRoute: LangIndexRoute,
 }
 
