@@ -10,6 +10,7 @@ import { PERMISSIONS, type Module } from "@/lib/rbac";
 import { useAuth } from "@/lib/auth";
 import { useRows } from "@/lib/data";
 import { LangSwitch } from "@/components/LangSwitch";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/$lang/app")({
   ssr: false,

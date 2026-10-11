@@ -8,6 +8,7 @@ import { useAuth } from "@/lib/auth";
 import { Field } from "@/components/kit";
 import { LangSwitch } from "@/components/LangSwitch";
 import hero from "@/assets/hero-tangier.jpg";
+import { BrandLogo } from "@/components/BrandLogo";
 
 export const Route = createFileRoute("/$lang/auth")({
   head: () => ({
