@@ -28,7 +28,8 @@ const STAFF_ROLES = ["manager", "operator", "accountant"] as const;
 function AgenciesPage() {
   const { t } = useLang();
   const { role } = useAuth();
-  const { data: agencies = [] } = useRows("agencies");
+  const { data: agencyRows = [] } = useRows("agencies");
+  const agencies = [...agencyRows].sort((a, b) => String(a.created_at).localeCompare(String(b.created_at)));
   const { data: cars = [] } = useRows("cars");
   const { data: members = [] } = useRows("agency_members");
   const { data: payments = [] } = useRows("payments");
@@ -100,7 +101,7 @@ function AgencyDetail({ agency, cars, members, write, onEdit }: { agency: AnyRow
     <div className="grid gap-6 xl:grid-cols-3">
       <Panel title={t("agencySettings")} action={write && <button className="btn-soft" onClick={onEdit}>{t("saveF")}…</button>}>
         <dl className="space-y-2 text-sm">
-          {([["agencyName", agency.name], ["cityF", agency.city], ["phoneF", agency.phone], ["emailF", agency.email], ["addressF", agency.address], ["accountantOf", accountant?.full_name]] as const).map(([k, v]) => (
+          {([["agencyName", agency.name], ["cityF", agency.city], ["phoneF", agency.phone], ["emailF", agency.email], ["addressF", agency.address], ["accountantOf", accountant?.full_name], ["Patente", agency.patente], ["RC", agency.rc], ["IF", agency.fiscal_id], ["ICE", agency.ice]] as const).map(([k, v]) => (
             <div key={k} className="flex justify-between gap-3 border-b border-border pb-2"><dt className="text-muted-foreground">{t(k)}</dt><dd className="font-semibold">{v || "—"}</dd></div>
           ))}
         </dl>
@@ -163,10 +164,11 @@ function AgencyForm({ row, onClose }: { row: AnyRow | null; onClose: () => void 
       <form className="space-y-3" onSubmit={(e) => {
         e.preventDefault();
         if (!String(v.name ?? "").trim()) return;
-        const { name, city, phone, email, address, currency } = v;
-        save.mutate({ id: row?.id, values: { name, city, phone, email, address, currency: currency || "MAD" } }, { onSuccess: onClose });
+        const { name, city, phone, email, address, currency, patente, rc, fiscal_id, ice } = v;
+        save.mutate({ id: row?.id, values: { name, city, phone, email, address, patente, rc, fiscal_id, ice, currency: currency || "MAD" } }, { onSuccess: onClose });
       }}>
         {f("name", "agencyName")}{f("city", "cityF")}{f("phone", "phoneF")}{f("email", "emailF")}{f("address", "addressF")}
+        {f("patente", "Patente")}{f("rc", "RC")}{f("fiscal_id", "IF")}{f("ice", "ICE")}
         <button className="btn-primary w-full" disabled={save.isPending}>{t("saveF")}</button>
       </form>
     </Drawer>

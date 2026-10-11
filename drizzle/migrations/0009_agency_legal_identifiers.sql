@@ -1,0 +1,1 @@
+ALTER TABLE public.agencies ADD COLUMN IF NOT EXISTS patente text, ADD COLUMN IF NOT EXISTS rc text, ADD COLUMN IF NOT EXISTS fiscal_id text, ADD COLUMN IF NOT EXISTS ice text;

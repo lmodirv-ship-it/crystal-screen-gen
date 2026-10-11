@@ -18,3 +18,4 @@
 - A person's role comes only from their own login row; one shared email may map to several logins via `public.role_logins` (resolved server-side by `resolve_role_login`), so the sign-in form never decides a role and no client-side role switching is allowed.
 - The active-agency filter is a per-browser choice applied inside `useRows` for tables listed in `src/lib/agency.ts` — every list respects it without page changes.
 - Booking lifecycle steps (accept, docs, prepare contract, approve) run only through security-definer RPCs that append to `booking_requests.history`; customers track by request number + phone via `track_booking` — no customer login needed and staff checks stay server-side.
+- Staff rental printing and customer tracking render the same RentalAgreement component from their existing authorized data; unavailable identity/inspection fields remain blank for handwriting, preventing invented data and keeping both copies consistent.

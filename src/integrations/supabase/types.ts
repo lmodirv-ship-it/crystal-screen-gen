@@ -21,9 +21,13 @@ export type Database = {
           created_at: string
           currency: string
           email: string | null
+          fiscal_id: string | null
+          ice: string | null
           id: string
           name: string
+          patente: string | null
           phone: string | null
+          rc: string | null
           status: string
         }
         Insert: {
@@ -32,9 +36,13 @@ export type Database = {
           created_at?: string
           currency?: string
           email?: string | null
+          fiscal_id?: string | null
+          ice?: string | null
           id?: string
           name: string
+          patente?: string | null
           phone?: string | null
+          rc?: string | null
           status?: string
         }
         Update: {
@@ -43,9 +51,13 @@ export type Database = {
           created_at?: string
           currency?: string
           email?: string | null
+          fiscal_id?: string | null
+          ice?: string | null
           id?: string
           name?: string
+          patente?: string | null
           phone?: string | null
+          rc?: string | null
           status?: string
         }
         Relationships: []

@@ -149,9 +149,54 @@
   @media (prefers-reduced-motion: reduce) { *, *::after { transition: none !important; animation: none !important; } }
 }
 
+:root { --paper-surface: #fff; --paper-ink: #171717; --paper-rule: #323232; --paper-muted: #555; }
+.rental-agreement { width: 100%; max-width: 210mm; margin: 0 auto; padding: 8mm; background: var(--paper-surface); color: var(--paper-ink); font-family: "Cairo", "Manrope", sans-serif; font-size: 9px; line-height: 1.4; letter-spacing: 0; }
+.agreement-header { display: grid; grid-template-columns: 1fr 65px 1fr; gap: 12px; align-items: center; padding-bottom: 4mm; border-bottom: 3px double var(--paper-rule); }
+.agreement-agency { display: block; font-size: 15px; }
+.agreement-reference { display: flex; flex-direction: column; text-align: right; gap: 2px; }
+.agreement-reference strong { font-size: 12px; }
+.agreement-title, .agreement-heading { display: flex; justify-content: space-between; align-items: center; gap: 8px; font-weight: 800; }
+.agreement-title { font-size: 15px; padding: 2mm 0; }
+.agreement-heading { font-size: 10px; padding: 1.2mm 2mm; border-bottom: 1px solid var(--paper-rule); margin: 0; }
+.agreement-columns { display: grid; grid-template-columns: 1.06fr 1fr; border: 1px solid var(--paper-rule); }
+.agreement-left { border-right: 1px solid var(--paper-rule); }
+.agreement-right { display: flex; flex-direction: column; }
+.agreement-section + .agreement-section { border-top: 1px solid var(--paper-rule); }
+.agreement-field { margin: 0 2mm; padding: 1mm 0 .5mm; }
+.agreement-label { display: flex; justify-content: space-between; align-items: baseline; gap: 8px; font-size: 8px; font-weight: 700; }
+.agreement-value { min-height: 4mm; border-bottom: 1px dotted var(--paper-muted); overflow-wrap: anywhere; font-weight: 600; font-size: 10px; }
+.agreement-return-sign { flex: 1; }
+.agreement-sign-space { min-height: 12mm; }
+.agreement-checks { display: flex; flex-wrap: wrap; gap: 8px; margin: 2mm; font-size: 8px; }
+.agreement-inspection { display: grid; grid-template-columns: 1fr .55fr 1fr; border: 1px solid var(--paper-rule); margin-top: 2mm; }
+.agreement-condition-body { display: grid; grid-template-columns: 65px 1fr; gap: 2mm; padding: 2mm; font-size: 8px; }
+.agreement-car { width: 65px; height: 112px; }
+.agreement-damage { border-left: 1px solid var(--paper-rule); border-right: 1px solid var(--paper-rule); text-align: center; font-size: 8px; }
+.agreement-damage p { margin: 2mm 0; }
+.agreement-writing { height: 4mm; border-bottom: 1px dotted var(--paper-muted); }
+.agreement-signature { border-top: 1px solid var(--paper-rule); margin-top: 4mm; padding-top: 1mm; text-align: center; font-weight: 700; }
+.agreement-terms { font-size: 8px; line-height: 1.5; margin: 3mm 0; }
+.agreement-final-signatures { display: grid; grid-template-columns: 1fr 1fr; gap: 10mm; font-weight: 700; text-align: center; }
+.agreement-credit { border-top: 1px solid var(--paper-rule); padding-top: 2mm; text-align: center; color: var(--paper-muted); font-size: 8px; }
+@media screen and (max-width: 600px) {
+  .rental-agreement { padding: 4mm; }
+  .agreement-header { grid-template-columns: 1fr 60px; gap: 8px; }
+  .agreement-reference { grid-column: 1 / -1; flex-direction: row; flex-wrap: wrap; justify-content: space-between; text-align: left; }
+  .agreement-columns { grid-template-columns: 1fr; }
+  .agreement-left { border-right: 0; border-bottom: 1px solid var(--paper-rule); }
+  .agreement-inspection { grid-template-columns: 1fr; }
+  .agreement-damage { border: 0; border-top: 1px solid var(--paper-rule); border-bottom: 1px solid var(--paper-rule); }
+  .agreement-condition-body { grid-template-columns: 80px 1fr; }
+  .agreement-final-signatures { gap: 4mm; }
+}
 @media print {
+  @page { size: A4 portrait; margin: 8mm; }
   aside, header.sticky, .no-print, [data-bg-picker], footer { display: none !important; }
-  body { background: white !important; }
+  body { background: var(--paper-surface) !important; color: var(--paper-ink) !important; }
   main { padding: 0 !important; }
-  .print-sheet { box-shadow: none !important; max-width: none !important; background: white !important; color: black !important; }
+  .print-sheet { box-shadow: none !important; max-width: none !important; background: var(--paper-surface) !important; color: var(--paper-ink) !important; }
+  .rental-agreement { width: 100%; padding: 0; break-inside: avoid; print-color-adjust: exact; }
+  .rental-agreement .agreement-field { padding-top: .6mm; }
+  .rental-agreement .agreement-sign-space { min-height: 9mm; }
+  .agreement-section, .agreement-inspection, .agreement-final-signatures { break-inside: avoid; }
 }
