@@ -1,7 +1,8 @@
 import { createFileRoute, notFound, Outlet } from "@tanstack/react-router";
 import { useEffect } from "react";
 import { dirOf, isLang } from "@/lib/i18n";
-import { RoleProvider } from "@/lib/role-store";
+import { AuthProvider } from "@/lib/auth";
+import { Toaster } from "@/components/ui/sonner";
 
 export const Route = createFileRoute("/$lang")({
   beforeLoad: ({ params }) => {
@@ -12,16 +13,17 @@ export const Route = createFileRoute("/$lang")({
 
 function LangLayout() {
   const { lang } = Route.useParams();
-  const l = isLang(lang) ? lang : "en";
+  const l = isLang(lang) ? lang : "ar";
   useEffect(() => {
     document.documentElement.lang = l;
     document.documentElement.dir = dirOf(l);
   }, [l]);
   return (
-    <RoleProvider>
-      <div dir={dirOf(l)} className={l === "ar" ? "font-arabic" : ""}>
+    <AuthProvider>
+      <div dir={dirOf(l)}>
         <Outlet />
       </div>
-    </RoleProvider>
+      <Toaster position="top-center" />
+    </AuthProvider>
   );
 }

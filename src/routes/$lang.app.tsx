@@ -1,17 +1,28 @@
-import { createFileRoute, Link, Outlet } from "@tanstack/react-router";
+import { createFileRoute, Link, Outlet, redirect, useNavigate } from "@tanstack/react-router";
+import { useQueryClient } from "@tanstack/react-query";
 import { useState } from "react";
+import {
+  Bell, BarChart3, Car, CalendarDays, FileText, FolderOpen, Home, LogOut, Menu, Receipt, ScrollText, Search, Settings, Users, Wallet, Wrench,
+} from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 import { isLang, translator } from "@/lib/i18n";
-import { PERMISSIONS, ROLES, type Role } from "@/lib/rbac";
-import { useRole } from "@/lib/role-store";
+import { PERMISSIONS, type Module } from "@/lib/rbac";
+import { useAuth } from "@/lib/auth";
+import { useRows } from "@/lib/data";
 import { LangSwitch } from "@/components/LangSwitch";
 
 export const Route = createFileRoute("/$lang/app")({
+  ssr: false,
+  beforeLoad: async ({ params }) => {
+    const { data } = await supabase.auth.getUser();
+    if (!data.user) throw redirect({ to: "/$lang/auth", params: { lang: params.lang } });
+  },
   head: () => ({
     meta: [
-      { title: "Dashboard — HN RentCar" },
-      { name: "description", content: "Role-based workspace for managing the HN RentCar agency." },
-      { property: "og:title", content: "Dashboard — HN RentCar" },
-      { property: "og:description", content: "Role-based workspace for managing the HN RentCar agency." },
+      { title: "Espace de gestion — HN RentCar" },
+      { name: "description", content: "Role-based workspace for the HN RentCar agency." },
+      { property: "og:title", content: "Espace de gestion — HN RentCar" },
+      { property: "og:description", content: "Role-based workspace for the HN RentCar agency." },
       { property: "og:type", content: "website" },
       { name: "twitter:card", content: "summary" },
     ],
@@ -19,59 +30,88 @@ export const Route = createFileRoute("/$lang/app")({
   component: AppShell,
 });
 
+const ICONS: Record<Module, typeof Home> = {
+  dashboard: Home, cars: Car, customers: Users, bookings: CalendarDays, contracts: FileText, payments: Wallet,
+  expenses: Receipt, maintenance: Wrench, documents: FolderOpen, notifications: Bell, reports: BarChart3, settings: Settings, audit: ScrollText,
+};
+const CUSTOMER_LABEL: Partial<Record<Module, string>> = { bookings: "myBookings", contracts: "myContracts", payments: "myPayments", documents: "myDocuments" };
+
 function AppShell() {
   const { lang } = Route.useParams();
-  const l = isLang(lang) ? lang : "en";
+  const l = isLang(lang) ? lang : "ar";
   const t = translator(l);
-  const { role, setRole } = useRole();
+  const { user, role, ready } = useAuth();
   const [open, setOpen] = useState(false);
-  const mods = PERMISSIONS[role].read;
+  const qc = useQueryClient();
+  const navigate = useNavigate();
+  const { data: notes = [] } = useRows("notifications");
+  const unread = notes.filter((n) => !n.is_read).length;
 
-  const nav = (
-    <nav className="flex flex-col gap-1">
-      {mods.map((m) =>
-        m === "dashboard" ? (
-          <Link key={m} to="/$lang/app" params={{ lang: l }} activeOptions={{ exact: true }} onClick={() => setOpen(false)} className="nav-link" activeProps={{ className: "nav-link-active" }}>{t(m)}</Link>
-        ) : (
-          <Link key={m} to="/$lang/app/$module" params={{ lang: l, module: m }} onClick={() => setOpen(false)} className="nav-link" activeProps={{ className: "nav-link-active" }}>{t(m)}</Link>
-        ),
-      )}
-    </nav>
+  if (!ready || !role) return <div className="grid min-h-screen place-items-center text-muted-foreground">{t("loading")}</div>;
+  const mods = PERMISSIONS[role].read;
+  const label = (m: Module) => t(role === "customer" ? CUSTOMER_LABEL[m] ?? m : m);
+
+  const signOut = async () => {
+    await qc.cancelQueries();
+    qc.clear();
+    await supabase.auth.signOut();
+    navigate({ to: "/$lang/auth", params: { lang: l }, replace: true });
+  };
+
+  const sidebar = (
+    <div className="flex h-full flex-col">
+      <Link to="/$lang" params={{ lang: l }} className="mb-5 block px-2 text-center">
+        <div className="font-display text-2xl font-black">HN <span className="text-primary">RentCar</span></div>
+        <div className="text-xs opacity-60">{t("appTag")}</div>
+      </Link>
+      <div className="mb-4 flex items-center gap-3 rounded-xl bg-sidebar-accent p-3">
+        <div className="grid h-11 w-11 place-items-center rounded-full bg-primary font-black text-primary-foreground">{(user?.email ?? "?")[0]?.toUpperCase()}</div>
+        <div className="min-w-0 text-sm">
+          <div className="truncate font-bold">{user?.user_metadata?.["full_name"] ?? user?.email}</div>
+          <div className="opacity-70">{t("r_" + role)}</div>
+          <div className="flex items-center gap-1 text-xs text-success"><span className="h-2 w-2 rounded-full bg-success" />{t("online")}</div>
+        </div>
+      </div>
+      <nav className="flex flex-1 flex-col gap-1 overflow-y-auto">
+        {mods.map((m) => {
+          const Icon = ICONS[m];
+          const inner = (<><Icon className="h-5 w-5" /><span className="flex-1">{label(m)}</span>{m === "notifications" && unread > 0 && <span className="grid h-5 min-w-5 place-items-center rounded-full bg-destructive px-1 text-xs text-primary-foreground">{unread}</span>}</>);
+          return m === "dashboard" ? (
+            <Link key={m} to="/$lang/app" params={{ lang: l }} activeOptions={{ exact: true }} onClick={() => setOpen(false)} className="nav-link" activeProps={{ className: "nav-link-active" }}>{inner}</Link>
+          ) : (
+            <Link key={m} to="/$lang/app/$module" params={{ lang: l, module: m }} onClick={() => setOpen(false)} className="nav-link" activeProps={{ className: "nav-link-active" }}>{inner}</Link>
+          );
+        })}
+      </nav>
+      <button onClick={signOut} className="nav-link mt-3 border border-sidebar-border"><LogOut className="h-5 w-5 text-destructive" />{t("signOut")}</button>
+    </div>
   );
 
   return (
     <div className="flex min-h-screen bg-background">
-      <aside className="sidebar hidden w-64 shrink-0 border-e border-sidebar-border p-4 md:block">
-        <Link to="/$lang" params={{ lang: l }} className="mb-6 block px-3 font-display text-lg font-bold">HN <span className="text-accent">RentCar</span></Link>
-        {nav}
-      </aside>
+      <aside className="sticky top-0 hidden h-screen w-64 shrink-0 bg-sidebar p-4 text-sidebar-foreground lg:block">{sidebar}</aside>
       {open && (
-        <div className="fixed inset-0 z-40 md:hidden" onClick={() => setOpen(false)}>
-          <div className="absolute inset-0 bg-background/70" />
-          <aside className="sidebar absolute inset-y-0 start-0 w-64 p-4" onClick={(e) => e.stopPropagation()}>{nav}</aside>
+        <div className="fixed inset-0 z-40 lg:hidden" onClick={() => setOpen(false)}>
+          <div className="absolute inset-0 bg-foreground/40" />
+          <aside className="absolute inset-y-0 start-0 w-72 bg-sidebar p-4 text-sidebar-foreground" onClick={(e) => e.stopPropagation()}>{sidebar}</aside>
         </div>
       )}
       <div className="flex min-w-0 flex-1 flex-col">
-        <header className="flex items-center justify-between gap-3 border-b border-border px-4 py-3">
-          <button className="btn-ghost md:hidden" onClick={() => setOpen(true)} aria-label="menu">☰</button>
-          <div className="flex flex-1 items-center justify-end gap-3">
-            <label className="flex items-center gap-2 text-sm text-muted-foreground">
-              {t("role")}
-              <select value={role} onChange={(e) => setRole(e.target.value as Role)} className="input w-auto py-1.5">
-                {ROLES.map((r) => <option key={r} value={r}>{t("r_" + r)}</option>)}
-              </select>
-            </label>
+        <header className="sticky top-0 z-20 flex items-center gap-3 border-b border-border bg-card/95 px-4 py-3 backdrop-blur">
+          <button className="btn-ghost p-2 lg:hidden" onClick={() => setOpen(true)} aria-label="menu"><Menu className="h-5 w-5" /></button>
+          <div className="relative hidden max-w-xl flex-1 md:block">
+            <Search className="pointer-events-none absolute start-3 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
+            <input className="input ps-9" placeholder={t("search")} />
+          </div>
+          <div className="ms-auto flex items-center gap-2">
             <LangSwitch lang={l} />
+            <Link to="/$lang/app/$module" params={{ lang: l, module: "notifications" }} className="btn-ghost relative p-2" aria-label="notifications">
+              <Bell className="h-5 w-5" />
+              {unread > 0 && <span className="absolute -end-1 -top-1 grid h-5 min-w-5 place-items-center rounded-full bg-destructive px-1 text-xs text-primary-foreground">{unread}</span>}
+            </Link>
           </div>
         </header>
-        <main className="flex-1 p-4 md:p-8">
-          {role === "visitor" ? (
-            <div className="card p-8 text-center">
-              <p className="text-muted-foreground">{t("noAccess")}</p>
-              <Link to="/$lang" params={{ lang: l }} className="btn-primary mt-4 inline-flex">{t("home")}</Link>
-            </div>
-          ) : <Outlet />}
-        </main>
+        <main className="flex-1 p-4 md:p-6"><Outlet /></main>
       </div>
     </div>
   );
