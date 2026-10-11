@@ -14,4 +14,5 @@
 - URLs are prefixed with a language segment (`/$lang/...`, en|fr|ar); Arabic sets dir=rtl in the `$lang` layout — keeps every page shareable per language.
 - Role permissions live only in `src/lib/rbac.ts` (read/write per module); nav and pages derive from it — one source of truth for access.
 - All modules render through the generic `$lang.app.$module.tsx` table driven by `src/lib/demo-data.ts` — new modules need only config.
-- Current role switching is a client-side demo; real auth/roles must move to Lovable Cloud with a separate user_roles table.
+- Real auth and roles live in Lovable Cloud: role assignments are rows in `public.user_roles` only (never on profiles or user-editable metadata), and access checks go through the security-definer `has_role`/`has_any_role`/`is_staff` functions.
+- A person's role comes only from their own login row; one shared email may map to several logins via `public.role_logins` (resolved server-side by `resolve_role_login`), so the sign-in form never decides a role and no client-side role switching is allowed.
