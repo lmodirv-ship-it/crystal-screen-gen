@@ -1,13 +1,11 @@
 import { createFileRoute, Link } from "@tanstack/react-router";
-import { CalendarDays, Car, Headphones, MapPin, Search, ShieldCheck, Tag, Users, ClipboardCheck, KeyRound, Phone, Mail } from "lucide-react";
+import { CalendarDays, Car, Headphones, MapPin, Search, ShieldCheck, Tag, Users, ClipboardCheck, KeyRound, Phone, Mail, MessageCircle } from "lucide-react";
 import hero from "@/assets/hero-tangier.jpg";
 import { isLang, translator } from "@/lib/i18n";
-import { LangSwitch } from "@/components/LangSwitch";
 import { useRows } from "@/lib/data";
 import { carImage, CATEGORIES } from "@/lib/car-images";
-import { useAuth } from "@/lib/auth";
 import { Badge } from "@/components/kit";
-import { BrandLogo } from "@/components/BrandLogo";
+import { PublicShell } from "@/components/PublicShell";
 
 export const Route = createFileRoute("/$lang/")({
   head: () => ({
@@ -23,43 +21,13 @@ export const Route = createFileRoute("/$lang/")({
   component: Home,
 });
 
-function Logo({ lang }: { lang: "en" | "fr" | "ar" }) {
-  return <BrandLogo lang={lang} />;
-}
-
 function Home() {
   const { lang } = Route.useParams();
   const l = isLang(lang) ? lang : "ar";
   const t = translator(l);
-  const { user } = useAuth();
   const { data: cars = [] } = useRows("cars", "*", "price_per_day");
-  const avail = cars.filter((c) => c.status === "available").slice(0, 6);
-
   return (
-    <div className="min-h-screen bg-background">
-      <header className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur">
-        <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
-          <Logo lang={l} />
-          <nav className="hidden gap-6 text-sm font-bold md:flex">
-            <a href="#top" className="text-primary">{t("home")}</a>
-            <a href="#fleet">{t("cars")}</a>
-            <a href="#how">{t("howItWorks")}</a>
-            <a href="#contact">{t("contactUs")}</a>
-          </nav>
-          <div className="flex items-center gap-2">
-            <LangSwitch lang={l} />
-            {user ? (
-              <Link to="/$lang/app" params={{ lang: l }} className="btn-primary">{t("openApp")}</Link>
-            ) : (
-              <>
-                <Link to="/$lang/auth" params={{ lang: l }} className="btn-ghost hidden sm:inline-flex">{t("signIn")}</Link>
-                <Link to="/$lang/book" params={{ lang: l }} search={{ car: undefined }} className="btn-primary"><CalendarDays className="h-4 w-4" />{t("bookNow")}</Link>
-              </>
-            )}
-          </div>
-        </div>
-      </header>
-
+    <PublicShell lang={l}>
       <section id="top" className="relative">
         <img src={hero} alt="" className="absolute inset-0 h-full w-full object-cover" width={1600} height={800} />
         <div className={`absolute inset-0 ${l === "ar" ? "hero-overlay-rtl" : "hero-overlay"}`} />
@@ -112,55 +80,13 @@ function Home() {
           })}
         </div>
       </section>
-
-      <section id="fleet" className="mx-auto max-w-7xl px-4 py-14">
-        <div className="grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
-          {avail.map((c) => (
-            <div key={c.id} className="card overflow-hidden">
-              <div className="relative bg-muted/60 p-4">
-                <span className="absolute start-3 top-3"><Badge value={c.status} /></span>
-                <img src={carImage(c.category)} alt={c.model} loading="lazy" width={992} height={672} className="mx-auto h-40 object-contain" />
-              </div>
-              <div className="p-5">
-                <div className="font-display text-lg font-extrabold">{c.model}</div>
-                <div className="mt-1 flex gap-3 text-xs text-muted-foreground"><span>{c.year}</span><span>{t(c.fuel)}</span><span>{t(c.transmission)}</span></div>
-                <div className="mt-4 flex items-center justify-between">
-                  <div className="font-display text-xl font-black text-primary">{c.price_per_day} <span className="text-sm">{t("perDay")}</span></div>
-                  <Link to="/$lang/book" params={{ lang: l }} search={{ car: c.id }} className="btn-primary">{t("bookNow")}</Link>
-                </div>
-              </div>
-            </div>
-          ))}
+      <section className="mx-auto max-w-6xl px-4 pb-16 text-center">
+        <div className="flex flex-wrap justify-center gap-3">
+          <Link to="/$lang/fleet" params={{ lang: l }} className="btn-primary"><Car className="h-4 w-4" />{t("cars")}</Link>
+          <Link to="/$lang/how-it-works" params={{ lang: l }} className="btn-ghost">{t("howItWorks")}</Link>
+          <Link to="/$lang/contact" params={{ lang: l }} className="btn-ghost">{t("contactUs")}</Link>
         </div>
       </section>
-
-      <section id="how" className="mx-auto max-w-6xl px-4 pb-16">
-        <h2 className="mb-8 text-center font-display text-3xl font-black">{t("howItWorks")}</h2>
-        <div className="grid gap-4 md:grid-cols-4">
-          {[[Search, "step1"], [CalendarDays, "step2"], [ClipboardCheck, "step3"], [KeyRound, "step4"]].map(([I, k], i) => {
-            const Icon = I as typeof Search;
-            return (
-              <div key={k as string} className="card p-6 text-center">
-                <span className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground"><Icon className="h-6 w-6" /></span>
-                <div className="mt-3 font-display text-2xl font-black text-primary">{i + 1}</div>
-                <div className="font-bold">{t(k as string)}</div>
-              </div>
-            );
-          })}
-        </div>
-      </section>
-
-      <footer id="contact" className="bg-sidebar py-10 text-sidebar-foreground">
-        <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-between gap-6 px-4">
-          <div><BrandLogo lang={l} /><div className="mt-1 text-sm opacity-70">{t("appTag")}</div></div>
-          <div className="space-y-1 text-sm">
-            <div className="flex items-center gap-2"><Phone className="h-4 w-4" /> <span dir="ltr">+212 6 12 34 56 78</span></div>
-            <div className="flex items-center gap-2"><Mail className="h-4 w-4" /> contact@hn-rentcar.com</div>
-            <div className="flex items-center gap-2"><MapPin className="h-4 w-4" /> Tanger, Maroc</div>
-          </div>
-          <div className="text-sm opacity-60">© 2026 HN RentCar</div>
-        </div>
-      </footer>
-    </div>
+    </PublicShell>
   );
 }
