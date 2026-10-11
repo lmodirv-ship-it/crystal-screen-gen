@@ -16,6 +16,7 @@ import { Route as LangAppRouteImport } from './routes/$lang.app'
 import { Route as LangAuthRouteImport } from './routes/$lang.auth'
 import { Route as LangAppIndexRouteImport } from './routes/$lang.app.index'
 import { Route as LangAppModuleRouteImport } from './routes/$lang.app.$module'
+import { Route as LangAppAgenciesRouteImport } from './routes/$lang.app.agencies'
 import { Route as LangAppCarsRouteImport } from './routes/$lang.app.cars'
 import { Route as LangAppDocumentsRouteImport } from './routes/$lang.app.documents'
 import { Route as LangAppReportsRouteImport } from './routes/$lang.app.reports'
@@ -58,6 +59,11 @@ const LangAppModuleRoute = LangAppModuleRouteImport.update({
   path: '/$module',
   getParentRoute: () => LangAppRoute,
 } as any)
+const LangAppAgenciesRoute = LangAppAgenciesRouteImport.update({
+  id: '/agencies',
+  path: '/agencies',
+  getParentRoute: () => LangAppRoute,
+} as any)
 const LangAppCarsRoute = LangAppCarsRouteImport.update({
   id: '/cars',
   path: '/cars',
@@ -96,6 +102,7 @@ export interface FileRoutesByFullPath {
   '/$lang/auth': typeof LangAuthRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
+  '/$lang/app/agencies': typeof LangAppAgenciesRoute
   '/$lang/app/cars': typeof LangAppCarsRoute
   '/$lang/app/documents': typeof LangAppDocumentsRoute
   '/$lang/app/reports': typeof LangAppReportsRoute
@@ -109,6 +116,7 @@ export interface FileRoutesByTo {
   '/$lang/auth': typeof LangAuthRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
+  '/$lang/app/agencies': typeof LangAppAgenciesRoute
   '/$lang/app/cars': typeof LangAppCarsRoute
   '/$lang/app/documents': typeof LangAppDocumentsRoute
   '/$lang/app/reports': typeof LangAppReportsRoute
@@ -125,6 +133,7 @@ export interface FileRoutesById {
   '/$lang/auth': typeof LangAuthRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
+  '/$lang/app/agencies': typeof LangAppAgenciesRoute
   '/$lang/app/cars': typeof LangAppCarsRoute
   '/$lang/app/documents': typeof LangAppDocumentsRoute
   '/$lang/app/reports': typeof LangAppReportsRoute
@@ -142,6 +151,7 @@ export interface FileRouteTypes {
     | '/$lang/auth'
     | '/$lang/'
     | '/$lang/app/$module'
+    | '/$lang/app/agencies'
     | '/$lang/app/cars'
     | '/$lang/app/documents'
     | '/$lang/app/reports'
@@ -155,6 +165,7 @@ export interface FileRouteTypes {
     | '/$lang/auth'
     | '/$lang'
     | '/$lang/app/$module'
+    | '/$lang/app/agencies'
     | '/$lang/app/cars'
     | '/$lang/app/documents'
     | '/$lang/app/reports'
@@ -170,6 +181,7 @@ export interface FileRouteTypes {
     | '/$lang/auth'
     | '/$lang/'
     | '/$lang/app/$module'
+    | '/$lang/app/agencies'
     | '/$lang/app/cars'
     | '/$lang/app/documents'
     | '/$lang/app/reports'
@@ -235,6 +247,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAppModuleRouteImport
       parentRoute: typeof LangAppRoute
     }
+    '/$lang/app/agencies': {
+      id: '/$lang/app/agencies'
+      path: '/agencies'
+      fullPath: '/$lang/app/agencies'
+      preLoaderRoute: typeof LangAppAgenciesRouteImport
+      parentRoute: typeof LangAppRoute
+    }
     '/$lang/app/cars': {
       id: '/$lang/app/cars'
       path: '/cars'
@@ -282,6 +301,7 @@ declare module '@tanstack/react-router' {
 
 interface LangAppRouteChildren {
   LangAppModuleRoute: typeof LangAppModuleRoute
+  LangAppAgenciesRoute: typeof LangAppAgenciesRoute
   LangAppCarsRoute: typeof LangAppCarsRoute
   LangAppDocumentsRoute: typeof LangAppDocumentsRoute
   LangAppReportsRoute: typeof LangAppReportsRoute
@@ -293,6 +313,7 @@ interface LangAppRouteChildren {
 
 const LangAppRouteChildren: LangAppRouteChildren = {
   LangAppModuleRoute: LangAppModuleRoute,
+  LangAppAgenciesRoute: LangAppAgenciesRoute,
   LangAppCarsRoute: LangAppCarsRoute,
   LangAppDocumentsRoute: LangAppDocumentsRoute,
   LangAppReportsRoute: LangAppReportsRoute,
