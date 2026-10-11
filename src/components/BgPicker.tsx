@@ -14,7 +14,7 @@ type ThemeId = (typeof THEMES)[number]["id"];
 const KEY = "hn-bg-theme";
 
 function applyTheme(id: ThemeId) {
-  document.documentElement.dataset.bg = id;
+  document.documentElement.dataset["bg"] = id;
 }
 
 export function BgPicker() {
