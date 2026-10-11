@@ -86,7 +86,7 @@ function TrackPage() {
         <form className="no-print card mb-6 grid gap-3 p-5 sm:grid-cols-[1fr_1fr_auto]" onSubmit={(e) => { e.preventDefault(); void load(); }}>
           <input required inputMode="numeric" dir="ltr" className="input" placeholder={t("requestNo")} value={ref} onChange={(e) => setRef(e.target.value.replace(/\D/g, ""))} />
           <input required minLength={6} dir="ltr" className="input" placeholder={t("phone")} value={phone} onChange={(e) => setPhone(e.target.value)} />
-          <button className="btn-primary">{t("search")}</button>
+          <button className="btn-primary">{t("trackBooking")}</button>
         </form>
         {miss && <div className="card p-6 text-center text-muted-foreground">{t("notFoundReq")}</div>}
         {data && (
