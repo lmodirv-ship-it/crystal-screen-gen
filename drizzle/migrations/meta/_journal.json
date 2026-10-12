@@ -85,6 +85,13 @@
       "when": 1791756509489,
       "tag": "0011_document_types",
       "breakpoints": true
+    },
+    {
+      "idx": 12,
+      "version": "7",
+      "when": 1791775740758,
+      "tag": "0012_site_stats_counters",
+      "breakpoints": true
     }
   ]
 }
