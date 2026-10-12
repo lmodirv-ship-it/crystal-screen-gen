@@ -4,6 +4,7 @@ import { CalendarDays, Mail, MapPin, Phone } from "lucide-react";
 import { translator, type Lang } from "@/lib/i18n";
 import { LangSwitch } from "@/components/LangSwitch";
 import { BrandLogo } from "@/components/BrandLogo";
+import { StatsBar } from "@/components/StatsBar";
 import { useAuth } from "@/lib/auth";
 
 export function PublicShell({ lang, children }: { lang: Lang; children: ReactNode }) {
@@ -13,6 +14,7 @@ export function PublicShell({ lang, children }: { lang: Lang; children: ReactNod
   const active = { className: "text-primary" };
   return (
     <div className="min-h-screen bg-background">
+      <StatsBar lang={lang} />
       <header className="sticky top-0 z-30 border-b border-border bg-card/95 backdrop-blur">
         <div className="mx-auto flex max-w-7xl items-center justify-between gap-4 px-4 py-3">
           <BrandLogo lang={lang} />
