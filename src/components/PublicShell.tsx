@@ -20,6 +20,9 @@ export function PublicShell({ lang, children }: { lang: Lang; children: ReactNod
             <Link to="/$lang" params={{ lang }} activeOptions={{ exact: true }} activeProps={active} className={nav}>{t("home")}</Link>
             <Link to="/$lang/fleet" params={{ lang }} activeProps={active} className={nav}>{t("cars")}</Link>
             <Link to="/$lang/how-it-works" params={{ lang }} activeProps={active} className={nav}>{t("howItWorks")}</Link>
+            <Link to="/$lang/blog" params={{ lang }} activeProps={active} className={nav}>{t("blog")}</Link>
+            <Link to="/$lang/locations" params={{ lang }} activeProps={active} className={nav}>{t("ourSites")}</Link>
+            <Link to="/$lang/programs" params={{ lang }} activeProps={active} className={nav}>{t("ourPrograms")}</Link>
             <Link to="/$lang/contact" params={{ lang }} activeProps={active} className={nav}>{t("contactUs")}</Link>
           </nav>
           <div className="flex items-center gap-2">
