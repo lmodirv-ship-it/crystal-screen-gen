@@ -14,10 +14,13 @@ import { Route as LangRouteImport } from './routes/$lang'
 import { Route as LangIndexRouteImport } from './routes/$lang.index'
 import { Route as LangAppRouteImport } from './routes/$lang.app'
 import { Route as LangAuthRouteImport } from './routes/$lang.auth'
+import { Route as LangBlogRouteImport } from './routes/$lang.blog'
 import { Route as LangBookRouteImport } from './routes/$lang.book'
 import { Route as LangContactRouteImport } from './routes/$lang.contact'
 import { Route as LangFleetRouteImport } from './routes/$lang.fleet'
 import { Route as LangHowItWorksRouteImport } from './routes/$lang.how-it-works'
+import { Route as LangLocationsRouteImport } from './routes/$lang.locations'
+import { Route as LangProgramsRouteImport } from './routes/$lang.programs'
 import { Route as LangTrackRouteImport } from './routes/$lang.track'
 import { Route as LangAppIndexRouteImport } from './routes/$lang.app.index'
 import { Route as LangAppModuleRouteImport } from './routes/$lang.app.$module'
@@ -56,6 +59,11 @@ const LangAuthRoute = LangAuthRouteImport.update({
   path: '/auth',
   getParentRoute: () => LangRoute,
 } as any)
+const LangBlogRoute = LangBlogRouteImport.update({
+  id: '/blog',
+  path: '/blog',
+  getParentRoute: () => LangRoute,
+} as any)
 const LangBookRoute = LangBookRouteImport.update({
   id: '/book',
   path: '/book',
@@ -74,6 +82,16 @@ const LangFleetRoute = LangFleetRouteImport.update({
 const LangHowItWorksRoute = LangHowItWorksRouteImport.update({
   id: '/how-it-works',
   path: '/how-it-works',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangLocationsRoute = LangLocationsRouteImport.update({
+  id: '/locations',
+  path: '/locations',
+  getParentRoute: () => LangRoute,
+} as any)
+const LangProgramsRoute = LangProgramsRouteImport.update({
+  id: '/programs',
+  path: '/programs',
   getParentRoute: () => LangRoute,
 } as any)
 const LangTrackRoute = LangTrackRouteImport.update({
@@ -142,10 +160,13 @@ export interface FileRoutesByFullPath {
   '/$lang': typeof LangRouteWithChildren
   '/$lang/app': typeof LangAppRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/blog': typeof LangBlogRoute
   '/$lang/book': typeof LangBookRoute
   '/$lang/contact': typeof LangContactRoute
   '/$lang/fleet': typeof LangFleetRoute
   '/$lang/how-it-works': typeof LangHowItWorksRoute
+  '/$lang/locations': typeof LangLocationsRoute
+  '/$lang/programs': typeof LangProgramsRoute
   '/$lang/track': typeof LangTrackRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
@@ -163,10 +184,13 @@ export interface FileRoutesByFullPath {
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/blog': typeof LangBlogRoute
   '/$lang/book': typeof LangBookRoute
   '/$lang/contact': typeof LangContactRoute
   '/$lang/fleet': typeof LangFleetRoute
   '/$lang/how-it-works': typeof LangHowItWorksRoute
+  '/$lang/locations': typeof LangLocationsRoute
+  '/$lang/programs': typeof LangProgramsRoute
   '/$lang/track': typeof LangTrackRoute
   '/$lang': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
@@ -187,10 +211,13 @@ export interface FileRoutesById {
   '/$lang': typeof LangRouteWithChildren
   '/$lang/app': typeof LangAppRouteWithChildren
   '/$lang/auth': typeof LangAuthRoute
+  '/$lang/blog': typeof LangBlogRoute
   '/$lang/book': typeof LangBookRoute
   '/$lang/contact': typeof LangContactRoute
   '/$lang/fleet': typeof LangFleetRoute
   '/$lang/how-it-works': typeof LangHowItWorksRoute
+  '/$lang/locations': typeof LangLocationsRoute
+  '/$lang/programs': typeof LangProgramsRoute
   '/$lang/track': typeof LangTrackRoute
   '/$lang/': typeof LangIndexRoute
   '/$lang/app/$module': typeof LangAppModuleRoute
@@ -212,10 +239,13 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/$lang/app'
     | '/$lang/auth'
+    | '/$lang/blog'
     | '/$lang/book'
     | '/$lang/contact'
     | '/$lang/fleet'
     | '/$lang/how-it-works'
+    | '/$lang/locations'
+    | '/$lang/programs'
     | '/$lang/track'
     | '/$lang/'
     | '/$lang/app/$module'
@@ -233,10 +263,13 @@ export interface FileRouteTypes {
   to:
     | '/'
     | '/$lang/auth'
+    | '/$lang/blog'
     | '/$lang/book'
     | '/$lang/contact'
     | '/$lang/fleet'
     | '/$lang/how-it-works'
+    | '/$lang/locations'
+    | '/$lang/programs'
     | '/$lang/track'
     | '/$lang'
     | '/$lang/app/$module'
@@ -256,10 +289,13 @@ export interface FileRouteTypes {
     | '/$lang'
     | '/$lang/app'
     | '/$lang/auth'
+    | '/$lang/blog'
     | '/$lang/book'
     | '/$lang/contact'
     | '/$lang/fleet'
     | '/$lang/how-it-works'
+    | '/$lang/locations'
+    | '/$lang/programs'
     | '/$lang/track'
     | '/$lang/'
     | '/$lang/app/$module'
@@ -317,6 +353,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LangAuthRouteImport
       parentRoute: typeof LangRoute
     }
+    '/$lang/blog': {
+      id: '/$lang/blog'
+      path: '/blog'
+      fullPath: '/$lang/blog'
+      preLoaderRoute: typeof LangBlogRouteImport
+      parentRoute: typeof LangRoute
+    }
     '/$lang/book': {
       id: '/$lang/book'
       path: '/book'
@@ -343,6 +386,20 @@ declare module '@tanstack/react-router' {
       path: '/how-it-works'
       fullPath: '/$lang/how-it-works'
       preLoaderRoute: typeof LangHowItWorksRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/locations': {
+      id: '/$lang/locations'
+      path: '/locations'
+      fullPath: '/$lang/locations'
+      preLoaderRoute: typeof LangLocationsRouteImport
+      parentRoute: typeof LangRoute
+    }
+    '/$lang/programs': {
+      id: '/$lang/programs'
+      path: '/programs'
+      fullPath: '/$lang/programs'
+      preLoaderRoute: typeof LangProgramsRouteImport
       parentRoute: typeof LangRoute
     }
     '/$lang/track': {
@@ -466,10 +523,13 @@ const LangAppRouteWithChildren =
 interface LangRouteChildren {
   LangAppRoute: typeof LangAppRouteWithChildren
   LangAuthRoute: typeof LangAuthRoute
+  LangBlogRoute: typeof LangBlogRoute
   LangBookRoute: typeof LangBookRoute
   LangContactRoute: typeof LangContactRoute
   LangFleetRoute: typeof LangFleetRoute
   LangHowItWorksRoute: typeof LangHowItWorksRoute
+  LangLocationsRoute: typeof LangLocationsRoute
+  LangProgramsRoute: typeof LangProgramsRoute
   LangTrackRoute: typeof LangTrackRoute
   LangIndexRoute: typeof LangIndexRoute
 }
@@ -477,10 +537,13 @@ interface LangRouteChildren {
 const LangRouteChildren: LangRouteChildren = {
   LangAppRoute: LangAppRouteWithChildren,
   LangAuthRoute: LangAuthRoute,
+  LangBlogRoute: LangBlogRoute,
   LangBookRoute: LangBookRoute,
   LangContactRoute: LangContactRoute,
   LangFleetRoute: LangFleetRoute,
   LangHowItWorksRoute: LangHowItWorksRoute,
+  LangLocationsRoute: LangLocationsRoute,
+  LangProgramsRoute: LangProgramsRoute,
   LangTrackRoute: LangTrackRoute,
   LangIndexRoute: LangIndexRoute,
 }
