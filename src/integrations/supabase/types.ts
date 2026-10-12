@@ -782,6 +782,21 @@ export type Database = {
         }
         Relationships: []
       }
+      site_stats: {
+        Row: {
+          id: number
+          visitors: number
+        }
+        Insert: {
+          id?: number
+          visitors?: number
+        }
+        Update: {
+          id?: number
+          visitors?: number
+        }
+        Relationships: []
+      }
       user_roles: {
         Row: {
           id: string
@@ -807,6 +822,8 @@ export type Database = {
     Functions: {
       _req_log: { Args: { p_id: string; p_step: string }; Returns: undefined }
       approve_contract: { Args: { p_id: string }; Returns: undefined }
+      bump_visitors: { Args: never; Returns: number }
+      count_registered: { Args: never; Returns: number }
       has_any_role: {
         Args: {
           _roles: Database["public"]["Enums"]["app_role"][]
