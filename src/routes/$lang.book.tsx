@@ -1,3 +1,4 @@
+import { uploadRequestDoc } from "@/lib/request-uploads.functions";
 import { createFileRoute, Link } from "@tanstack/react-router";
 import { useMemo, useState } from "react";
 import { CalendarDays, CheckCircle2, Upload } from "lucide-react";
@@ -47,9 +48,8 @@ function BookPage() {
   const upload = async (f: File | null) => {
     if (!f) return null;
     if (f.size > MAX) throw new Error("> 10 MB");
-    const path = `requests/${crypto.randomUUID()}-${f.name.replace(/[^\w.-]/g, "_")}`;
-    const { error } = await supabase.storage.from("documents").upload(path, f);
-    if (error) throw error;
+    const fd = new FormData(); fd.append("file", f);
+    const { path } = await uploadRequestDoc({ data: fd });
     return path;
   };
 

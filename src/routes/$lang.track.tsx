@@ -1,3 +1,4 @@
+import { uploadRequestDoc } from "@/lib/request-uploads.functions";
 import { createFileRoute } from "@tanstack/react-router";
 import { useEffect, useState } from "react";
 import { CheckCircle2, Circle, Printer, Search, Upload } from "lucide-react";
@@ -60,9 +61,8 @@ function TrackPage() {
 
   const up = async (f: File) => {
     if (f.size > MAX) throw new Error("> 10 MB");
-    const path = `requests/${crypto.randomUUID()}-${f.name.replace(/[^\w.-]/g, "_")}`;
-    const { error } = await supabase.storage.from("documents").upload(path, f);
-    if (error) throw error;
+    const fd = new FormData(); fd.append("file", f);
+    const { path } = await uploadRequestDoc({ data: fd });
     return path;
   };
   const sendDocs = async () => {

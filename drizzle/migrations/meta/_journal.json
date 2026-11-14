@@ -92,6 +92,13 @@
       "when": 1791775740758,
       "tag": "0012_site_stats_counters",
       "breakpoints": true
+    },
+    {
+      "idx": 13,
+      "version": "7",
+      "when": 1794678297167,
+      "tag": "0013_tighten_cars_read_and_request_uploads",
+      "breakpoints": true
     }
   ]
 }
